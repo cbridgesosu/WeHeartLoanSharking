@@ -1,0 +1,34 @@
+
+{% extends "base.j2" %}
+{% block content %}
+
+    <h1>Current Enforcers</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Start Date</th>
+        </tr>
+        <tbody>
+        {% for enforcer in enforcers %}
+            <tr>
+                <td>{{ enforcer['firstName'] }}</td>
+                <td>{{ enforcer['lastName'] }}</td>
+                <td>{{ enforcer['startDate'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <h1>Add New Enforcer</h1>
+    <form action="{{ url_for('add_enforcer') }}" method="POST">
+        <input type="text" name="firstName" placeholder="First Name" required=True />
+        <input type="text" name="lastName" placeholder="Last Name" />
+        <input type="date" name="startDate" required=True /> 
+        <button type="submit">Add</button>
+    </form>
+
+
+{% endblock %}
