@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import os
 from dotenv import load_dotenv
 
@@ -14,7 +14,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return "Welcome to the OSU CS 340 - Flask Tutorial!"
+    return render_template("main.j2")
+
+@app.route('/test')
+def test():
+    return render_template("test.j2")
 
 # Listener
 
