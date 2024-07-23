@@ -11,10 +11,10 @@
             <th>Client Name</th>
         </tr>
         <tbody>
-        {% for enforcer in enforcer_has_clients %}
+        {% for assignment in enforcer_has_clients %}
             <tr>
-                <td>{{ enforcer }}</td>
-                <td>{{ enforcer_has_clients[enforcer] }}</td>
+                <td>{{ assignment[0] }}</td>
+                <td>{{ assignment[1] }}</td>
             </tr>
         {% endfor %}
     </table>

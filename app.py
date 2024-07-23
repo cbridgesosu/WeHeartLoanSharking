@@ -46,10 +46,10 @@ clients = [
     }
 ]
 
-enforcer_has_clients = {
-    "Sergei": "Cersei",
-    "Elena": "Ned"
-}
+enforcer_has_clients = [
+    ["Sergei", "Cersei"],
+    ["Elena", "Ned"],
+]
 
 # Configuration
 
@@ -85,7 +85,7 @@ def add_client():
 def assign_client():
     if request.method == "POST":
             print("Client assigned.")
-            enforcer_has_clients[request.form.get("assign_enforcer")] = request.form.get("assign_client")
+            enforcer_has_clients.append([request.form.get("assign_enforcer"), request.form.get("assign_client")])
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
 @app.route('/test')
@@ -100,4 +100,4 @@ if __name__ == "__main__":
     #                                 ^^^^
     #              You can replace this number with any valid port
     
-    app.run(port=port, debug=True, threaded=True) 
+    app.run(port=port) 
