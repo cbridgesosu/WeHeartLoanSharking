@@ -46,6 +46,11 @@ clients = [
     }
 ]
 
+enforcer_has_clients = {
+    "Sergei": "Cersei",
+    "Elena": "Ned"
+}
+
 # Configuration
 
 app = Flask(__name__)
@@ -75,6 +80,13 @@ def add_client():
                               "inGoodStanding": True,
                               "loansRemaining": 0})
     return render_template("add_client.j2", clients=clients)
+
+@app.route('/assign_client', methods=["POST", "GET"])
+def assign_client():
+    if request.method == "POST":
+            print("Client assigned.")
+            enforcer_has_clients[request.form.get("assign_enforcer")] = request.form.get("assign_client")
+    return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
 @app.route('/test')
 def test():
