@@ -75,6 +75,41 @@ enforcer_has_clients = [
     },
 ]
 
+locations = [
+     {
+          'businessID': 1,
+          'ownerID': 1,
+          'streetAddress': '1234 Main St',
+          'cityName': 'Chicago',
+          'stateName': 'Illinois',
+          'zipCode': 60603
+     },
+     {
+          'businessID': 2,
+          'ownerID': 1,
+          'streetAddress': '5678 Westeros Pl',
+          'cityName': 'Paris',
+          'stateName': 'Texas',
+          'zipCode': 75462
+     },
+     {
+          'businessID': 3,
+          'ownerID': 2,
+          'streetAddress': '23rd W. Broadway',
+          'cityName': 'New York',
+          'stateName': 'New York',
+          'zipCode': 10016
+     },
+     {
+          'businessID': 4,
+          'ownerID': 3,
+          'streetAddress': '327 Beagle St',
+          'cityName': 'San Diego',
+          'stateName': 'California',
+          'zipCode': 92038
+     }
+]
+
 # Configuration
 
 app = Flask(__name__)
@@ -110,6 +145,13 @@ def assign_client():
     if request.method == "POST":
             print("Client assigned.")
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
+
+@app.route('/add_location', methods=["POST", "GET"])
+def add_location():
+    if request.method == "POST":
+            print("Location added.")
+
+    return render_template("add_location.j2", locations=locations, clients=clients)
 
 @app.route('/test')
 def test():
