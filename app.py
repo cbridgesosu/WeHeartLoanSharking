@@ -9,16 +9,19 @@ PORT = os.getenv('PORT')
 # temporary data until DB implemented
 enforcers = [
     {
+        "enforcerID": 1,
         "firstName": "Sergei",
         "lastName": None,
         "startDate": "1990-01-01"
     },
     {
+        "enforcerID": 2,
         "firstName": "Elena",
         "lastName": "Stark",
         "startDate": "2015-08-22"
     },
     {
+        "enforcerID": 3,
         "firstName": "Georg",
         "lastName": "Rulin",
         "startDate": "2007-02-27"
@@ -27,18 +30,21 @@ enforcers = [
 
 clients = [
     {
+         "clientID": 1,
         "firstName": "Jon",
         "lastName": "Snow",
         "inGoodStanding": True,
         "loansRemaining": 100000
     },
     {
+        "clientID": 2,
         "firstName": "Cersei",
         "lastName": "Lannister",
         "inGoodStanding": False,
         "loansRemaining": 150000
     },
     {
+        "clientID": 3,
         "firstName": "Ned",
         "lastName": "Stark",
         "inGoodStanding": False,
