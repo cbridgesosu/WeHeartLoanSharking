@@ -110,6 +110,45 @@ locations = [
      }
 ]
 
+loans = [
+     {
+          "loanID": 1,
+          "clientID": 1,
+          "originationAmount": 50000,
+          "principalRemaining": 50000,
+          "originationDate": "2024-07-04",
+          "interestRate": 33,
+          "paymentDue": 15
+     },
+     {
+          "loanID": 2,
+          "clientID": 1,
+          "originationAmount": 50000,
+          "principalRemaining": 50000,
+          "originationDate": "2024-07-05",
+          "interestRate": 33,
+          "paymentDue": 15
+     },  
+     {
+          "loanID": 3,
+          "clientID": 2,
+          "originationAmount": 200000,
+          "principalRemaining": 150000,
+          "originationDate": "2022-01-01",
+          "interestRate": 45,
+          "paymentDue": 10
+     },
+     {
+          "loanID": 4,
+          "clientID": 3,
+          "originationAmount": 100000,
+          "principalRemaining": 55000,
+          "originationDate": "2023-12-25",
+          "interestRate": 23,
+          "paymentDue": 10
+     },
+]
+
 # Configuration
 
 app = Flask(__name__)
@@ -152,6 +191,13 @@ def add_location():
             print("Location added.")
 
     return render_template("add_location.j2", locations=locations, clients=clients)
+
+@app.route('/add_loan', methods=["POST", "GET"])
+def add_loan():
+    if request.method == "POST":
+            print("Loan added.")
+
+    return render_template("add_loan.j2", loans=loans, clients=clients)
 
 @app.route('/test')
 def test():
