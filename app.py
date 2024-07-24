@@ -149,6 +149,33 @@ loans = [
      },
 ]
 
+collections = [
+      {
+            "collectionID": 1,
+            "enforcerID": 1,
+            "loanID": 1,
+            "businessID": 2,
+            "amountCollected": 1000,
+            "dateOfCollection": "2024-07-01"
+      },
+      {
+            "collectionID": 2,
+            "enforcerID": 2,
+            "loanID": 2,
+            "businessID": 1,
+            "amountCollected": 5000,
+            "dateOfCollection": "2024-07-10"
+      },
+      {
+            "collectionID": 3,
+            "enforcerID": 3,
+            "loanID": 3,
+            "businessID": 3,
+            "amountCollected": 1500,
+            "dateOfCollection": "2024-07-07"
+      },
+]
+
 # Configuration
 
 app = Flask(__name__)
@@ -198,6 +225,13 @@ def add_loan():
             print("Loan added.")
 
     return render_template("add_loan.j2", loans=loans, clients=clients)
+
+@app.route('/add_collection', methods=["POST", "GET"])
+def add_collection():
+    if request.method == "POST":
+            print("Collection added.")
+
+    return render_template("add_collection.j2", collections=collections, loans=loans, enforcers=enforcers, locations=locations)
 
 @app.route('/test')
 def test():
