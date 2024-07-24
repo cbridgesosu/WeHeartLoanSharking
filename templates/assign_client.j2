@@ -7,14 +7,16 @@
     <table>
         <thead>
         <tr>
-            <th>Enforcer Name</th>
-            <th>Client Name</th>
+            <th>Assignment ID</th>
+            <th>Enforcer ID</th>
+            <th>Client ID</th>
         </tr>
         <tbody>
         {% for assignment in enforcer_has_clients %}
             <tr>
-                <td>{{ assignment[0] }}</td>
-                <td>{{ assignment[1] }}</td>
+                <td>{{ assignment['enforcerClientID'] }}</td>
+                <td>{{ assignment['enforcerID'] }}</td>
+                <td>{{ assignment['clientID'] }}</td>
             </tr>
         {% endfor %}
     </table>

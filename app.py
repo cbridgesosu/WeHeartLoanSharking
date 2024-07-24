@@ -53,8 +53,26 @@ clients = [
 ]
 
 enforcer_has_clients = [
-    ["Sergei", "Cersei"],
-    ["Elena", "Ned"],
+    {
+        'enforcerClientID': 1,
+        'enforcerID': 1,
+        'clientID': 3
+    },
+    {
+        'enforcerClientID': 2,
+        'enforcerID': 2,
+        'clientID': 1
+    },
+    {
+        'enforcerClientID': 3,
+        'enforcerID': 3,
+        'clientID': 3
+    },
+    {
+        'enforcerClientID': 4,
+        'enforcerID': 2,
+        'clientID': 3
+    },
 ]
 
 # Configuration
@@ -91,7 +109,6 @@ def add_client():
 def assign_client():
     if request.method == "POST":
             print("Client assigned.")
-            enforcer_has_clients.append([request.form.get("assign_enforcer"), request.form.get("assign_client")])
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
 @app.route('/test')
