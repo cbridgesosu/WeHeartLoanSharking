@@ -45,7 +45,7 @@ INSERT INTO EnforcersHasClients (enforcerID, clientID)
 VALUES (:enforcerID, :clientID);
 
 -- delete a client
-DELETE FROM Clients WHERE clientID = :clientID_selected_from_delete_client_page
+DELETE FROM Clients WHERE clientID = :clientID_selected_from_delete_client_page;
 
 -- update a client
-UPDATE Clients SET firstName = :fnameInput, lastName= :lnameInput, inGoodStanding = :inGoodStanding_Input WHERE id= :clientID_selected_from_the_update_form
+UPDATE Clients SET firstName = :fnameInput, lastName= :lnameInput, inGoodStanding = :inGoodStanding_Input WHERE id= :clientID_selected_from_the_update_form;
