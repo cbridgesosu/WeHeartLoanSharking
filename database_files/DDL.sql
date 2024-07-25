@@ -62,10 +62,10 @@ CREATE OR REPLACE TABLE Enforcers (
 --
 
 CREATE OR REPLACE TABLE EnforcersHasClients (
-  enforcerClientID int(11) NOT NULL AUTO_INCREMENT,
+  enforcerHasClientID int(11) NOT NULL AUTO_INCREMENT,
   enforcerID int(11) NOT NULL,
   clientID int(11) NOT NULL,
-  PRIMARY KEY (enforcerClientID),
+  PRIMARY KEY (enforcerHasClientID),
   FOREIGN KEY (clientID) REFERENCES Clients(clientID) ON DELETE CASCADE,
   FOREIGN KEY (enforcerID) REFERENCES Enforcers(enforcerID) ON DELETE CASCADE,
   CONSTRAINT unique_enforcer_clientID UNIQUE(enforcerID, clientID)
