@@ -37,7 +37,7 @@ CREATE OR REPLACE TABLE BusinessLocations (
   stateName varchar(20) DEFAULT NULL,
   zipCode char(5) DEFAULT NULL,
   PRIMARY KEY (businessID),
-  FOREIGN KEY (ownerID) REFERENCES Clients(clientID)
+  FOREIGN KEY (ownerID) REFERENCES Clients(clientID) ON DELETE CASCADE
 );
 
 -- --------------------------------------------------------
@@ -66,8 +66,8 @@ CREATE OR REPLACE TABLE EnforcersHasClients (
   enforcerID int(11) NOT NULL,
   clientID int(11) NOT NULL,
   PRIMARY KEY (enforcerClientID),
-  FOREIGN KEY (clientID) REFERENCES Clients(clientID),
-  FOREIGN KEY (enforcerID) REFERENCES Enforcers(enforcerID),
+  FOREIGN KEY (clientID) REFERENCES Clients(clientID) ON DELETE CASCADE,
+  FOREIGN KEY (enforcerID) REFERENCES Enforcers(enforcerID) ON DELETE CASCADE,
   CONSTRAINT unique_enforcer_clientID UNIQUE(enforcerID, clientID)
 );
 
@@ -86,7 +86,7 @@ CREATE OR REPLACE TABLE Loans (
   interestRate decimal(19,2) NOT NULL,
   paymentDue tinyint NOT NULL,
   PRIMARY KEY (loanID),
-  FOREIGN KEY (clientID) REFERENCES Clients(clientID)
+  FOREIGN KEY (clientID) REFERENCES Clients(clientID) ON DELETE CASCADE
 );
 
 -- --------------------------------------------------------
@@ -103,9 +103,9 @@ CREATE OR REPLACE TABLE `Collections` (
   amountCollected decimal(19,2) NOT NULL,
   dateOfCollection date NOT NULL,
   PRIMARY KEY (collectionID),
-  FOREIGN KEY (enforcerID) REFERENCES Enforcers(enforcerID),
-  FOREIGN KEY (loanID) REFERENCES Loans(loanID),
-  FOREIGN KEY (businessID) REFERENCES BusinessLocations(businessID)
+  FOREIGN KEY (enforcerID) REFERENCES Enforcers(enforcerID) ON DELETE CASCADE,
+  FOREIGN KEY (loanID) REFERENCES Loans(loanID) ON DELETE CASCADE,
+  FOREIGN KEY (businessID) REFERENCES BusinessLocations(businessID) ON DELETE CASCADE
 );
 
 -- --------------------------------------------------------
