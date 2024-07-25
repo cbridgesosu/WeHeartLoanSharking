@@ -4,16 +4,6 @@ Access URL: https://canvas.oregonstate.edu/courses/1967354/assignments/9690212
 Access Date: 2024-07-25
 */
 
---These are some Database Manipulation queries for a partially implemented Project Website 
--- using the bsg database.
--- Your submission should contain ALL the queries required to implement ALL the
--- functionalities listed in the Project Specs.
-
-/*
--- get all Planet IDs and Names to populate the Homeworld dropdown
-SELECT planet_id, name FROM bsg_planets
-*/
-
 -- Retrieve all Client information to populate Add Client, Update Client or Delete Client pages
 SELECT * FROM Clients;
 
@@ -38,7 +28,21 @@ INSERT INTO Clients (firstName, lastName, inGoodStanding) VALUES (:fnameInput, :
 -- add a new Enforcer 
 INSERT INTO Enforcers (firstName, lastName, startDate) VALUES (:fnameInput, :lnameInput, :dateInput);
 
+-- add a new Location
+INSERT INTO BusinessLocations (ownerID, streetAddress, cityName, stateName, zipCode)
+VALUES (:ownerID, :streetAddress, :cityName, :stateName, :zipCode);
 
+-- add a new Loan
+INSERT INTO Loans (clientID, originationAmount, principalRemaining, originationDate, interestRate, paymentDue)
+VALUES (:clientID, :originationAmount, :originationAmount, :originationDate, :interestRate, :dayOfMonthDue);
+
+-- add a new Collection
+INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection)
+VALUES (:enforcerID, :loanID, :businessID, :amountCollected, :dateOfCollection);
+
+-- Assign client to enforcer (add a new client / enforcer relationship)
+INSERT INTO EnforcersHasClients (enforcerID, clientID)
+VALUES (:enforcerID, :clientID);
 
 
 
