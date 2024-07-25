@@ -20,6 +20,7 @@ CREATE OR REPLACE TABLE Clients (
   firstName varchar(30) NOT NULL,
   lastName varchar(30),
   inGoodStanding BOOL DEFAULT 0 NOT NULL,
+  CHECK (inGoodStanding >=0 AND inGoodStanding <= 1),
   PRIMARY KEY (clientID)
 );
 
