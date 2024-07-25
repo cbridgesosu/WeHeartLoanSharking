@@ -33,22 +33,19 @@ clients = [
          "clientID": 1,
         "firstName": "Jon",
         "lastName": "Snow",
-        "inGoodStanding": True,
-        "loansRemaining": 100000
+        "inGoodStanding": True
     },
     {
         "clientID": 2,
         "firstName": "Cersei",
         "lastName": "Lannister",
-        "inGoodStanding": False,
-        "loansRemaining": 150000
+        "inGoodStanding": False
     },
     {
         "clientID": 3,
         "firstName": "Ned",
         "lastName": "Stark",
-        "inGoodStanding": False,
-        "loansRemaining": 55000
+        "inGoodStanding": False
     }
 ]
 
