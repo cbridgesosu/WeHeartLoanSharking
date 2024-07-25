@@ -212,6 +212,18 @@ def assign_client():
             print("Client assigned.")
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
+@app.route('/update_client', methods=["POST", "GET"])
+def update_client():
+    if request.method == "POST":
+            print("Client updated.")
+    return render_template("update_client.j2", clients=clients)
+
+@app.route('/delete_client', methods=["POST", "GET"])
+def delete_client():
+    if request.method == "POST":
+            print("Client deleted.")
+    return render_template("delete_client.j2", clients=clients)
+
 @app.route('/add_location', methods=["POST", "GET"])
 def add_location():
     if request.method == "POST":
