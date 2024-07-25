@@ -1,0 +1,47 @@
+
+{% extends "base.j2" %}
+{% block content %}
+
+    <h1>Locations</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Business ID</th>
+            <th>Owner ID</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>ZIP Code</th>
+        </tr>
+        <tbody>
+        {% for location in locations %}
+            <tr>
+                <td>{{ location['businessID'] }}</td>
+                <td>{{ location['ownerID'] }}</td>
+                <td>{{ location['streetAddress'] }}</td>
+                <td>{{ location['cityName'] }}</td>
+                <td>{{ location['stateName'] }}</td>
+                <td>{{ location['zipCode'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <h1>Add Location</h1>
+    <form action="{{ url_for('add_location') }}" method="POST">
+        <input type="text" name="streetAddress" placeholder="Street Address" required=True />
+        <input type="text" name="cityName" placeholder="City" required=True />
+        <input type="text" name="stateName" placeholder="State" required=True />
+        <input type="number" name="zipCode" placeholder="ZIP Code" required=True />
+        <label for="assign_owner">Select Owner:</label>
+        <select id="assign_owner" name="assign_owner" required=True >
+            {% for client in clients %}
+                <option value={{ client["firstName"] }}>{{ client["firstName"] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add</button>
+    </form>
+
+
+{% endblock %}

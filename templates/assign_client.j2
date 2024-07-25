@@ -1,0 +1,44 @@
+
+{% extends "base.j2" %}
+{% block content %}
+
+    <h1>Assigned Clients</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Assignment ID</th>
+            <th>Enforcer ID</th>
+            <th>Client ID</th>
+        </tr>
+        <tbody>
+        {% for assignment in enforcer_has_clients %}
+            <tr>
+                <td>{{ assignment['enforcerClientID'] }}</td>
+                <td>{{ assignment['enforcerID'] }}</td>
+                <td>{{ assignment['clientID'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <h1>Assign Client</h1>
+    <form action="{{ url_for('assign_client') }}" method="POST">
+        <label for="assign_enforcer">Select Enforcer:</label>
+        <select id="assign_enforecer" name="assign_enforcer">
+            {% for enforcer in enforcers %}
+                <option value={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="assign_client">Select Client:</label>
+        <select id="assign_client" name="assign_client">
+            {% for client in clients %}
+                <option value={{ client["firstName"] }}>{{ client["firstName"] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Add</button>
+    </form>
+
+
+{% endblock %}
