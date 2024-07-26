@@ -261,7 +261,9 @@ def add_collection():
 def add_rank():
     if request.method == "POST":
             print("Rank added.")
-            ranks.append({"rankName": request.form.get("rankName")})
+            id = len(ranks) + 1
+            ranks.append({"rankName": request.form.get("rankName"),
+                          "rankID": len(ranks) +1})
     return render_template("add_rank.j2", ranks=ranks)
 
 @app.route('/test')
