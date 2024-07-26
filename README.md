@@ -1,1 +1,7 @@
 # WeHeartLoanSharking
+
+# All code is based on th CS340 Flask starter app code with the exception of:
+# Jinja templating adapted from documentation at
+#       URL: https://jinja.palletsprojects.com/en/2.11.x/templates/
+# Bootstrap styling adapted from documentation at
+#       URL: https://getbootstrap.com/docs/5.3/getting-started/introduction/
