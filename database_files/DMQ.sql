@@ -22,6 +22,9 @@ SELECT * FROM Loans;
 -- Retrieve all Collection information to display on Add Collection page
 SELECT * FROM Collections;
 
+-- Retrieve all Rank information to display on Add Rank page
+SELECT * FROM Ranks;
+
 -- add a new client
 INSERT INTO Clients (firstName, lastName, inGoodStanding) VALUES (:fnameInput, :lnameInput, 0);
 
@@ -39,6 +42,10 @@ VALUES (:clientID, :originationAmount, :originationAmount, :originationDate, :in
 -- add a new Collection
 INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection)
 VALUES (:enforcerID, :loanID, :businessID, :amountCollected, :dateOfCollection);
+
+-- add a new Rank
+INSERT INTO Ranks (rankName)
+VALUES (:rankName);
 
 -- Assign client to enforcer (add a new client / enforcer relationship)
 INSERT INTO EnforcersHasClients (enforcerID, clientID)
