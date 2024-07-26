@@ -53,7 +53,9 @@ CREATE OR REPLACE TABLE Enforcers (
   firstName varchar(30) NOT NULL,
   lastName varchar(30),
   startDate date NOT NULL,
-  PRIMARY KEY (enforcerID)
+  rankID int(11) DEFAULT NULL,
+  PRIMARY KEY (enforcerID),
+  FOREIGN KEY (rankID) REFERENCES Ranks(rankID)
 );
 
 -- --------------------------------------------------------
@@ -111,6 +113,18 @@ CREATE OR REPLACE TABLE `Collections` (
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `Ranks`
+--
+
+CREATE OR REPLACE TABLE `Ranks` (
+  rankID int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+  rankName varchar(40) UNIQUE NOT NULL,
+  PRIMARY KEY (rankID)
+);
+
+-- --------------------------------------------------------
+
 /*
    Insert data into table
 
@@ -141,10 +155,10 @@ VALUES (1, 50000, 50000, '2024-07-04', 33, 15),
 (2, 200000, 150000, '2022-01-01', 45, 1),
 (3, 100000, 55000, '2023-12-25', 23, 10);
 
-INSERT INTO Enforcers (firstName, lastName, startDate)
-VALUES ('Sergei', NULL, '1990-01-01'),
-('Elena', 'Stark', '2015-08-22'),
-('Georg', 'Rulin', '2007-02-27');
+INSERT INTO Enforcers (firstName, lastName, startDate, rankID)
+VALUES ('Sergei', NULL, '1990-01-01', 1),
+('Elena', 'Stark', '2015-08-22', 2),
+('Georg', 'Rulin', '2007-02-27', NULL);
 
 INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection)
 VALUES (1, 1, 2, 1000, '2024-07-01'),
@@ -153,6 +167,9 @@ VALUES (1, 1, 2, 1000, '2024-07-01'),
 
 INSERT INTO EnforcersHasClients (enforcerID, clientID)
 VALUES (1, 3), (2, 1), (3, 3), (2, 3);
+
+INSERT INTO Ranks (rankID, rankName)
+VALUES (1, 'Underboss'), (2, 'Captain'), (3, 'Soldier');
 
 -- Suggested edits from Step 2 draft page
 -- URL: https://canvas.oregonstate.edu/courses/1967354/assignments/9690210?module_item_id=24460832
