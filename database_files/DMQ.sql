@@ -1,3 +1,8 @@
+-- Charles Holz
+-- Christopher Bridges
+-- CS340 - Group 41
+-- We ❤️ Loan Sharking
+
 /*
 This file is based on the example provided in CS340 at Oregon State University.
 Access URL: https://canvas.oregonstate.edu/courses/1967354/assignments/9690212
