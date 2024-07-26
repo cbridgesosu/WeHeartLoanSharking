@@ -173,6 +173,21 @@ collections = [
       },
 ]
 
+ranks = [
+      {
+            "rankID": 1,
+            "rankName": "Underboss"
+      },
+      {
+            "rankID": 2,
+            "rankName": "Captain"
+      },
+      {
+            "rankID": 3,
+            "rankName": "Soldier"
+      }
+]
+
 # Configuration
 
 app = Flask(__name__)
@@ -241,6 +256,13 @@ def add_collection():
             print("Collection added.")
 
     return render_template("add_collection.j2", collections=collections, loans=loans, enforcers=enforcers, locations=locations)
+
+@app.route('/add_rank', methods=["POST", "GET"])
+def add_rank():
+    if request.method == "POST":
+            print("Rank added.")
+            ranks.append({"rankName": request.form.get("rankName")})
+    return render_template("add_rank.j2", ranks=ranks)
 
 @app.route('/test')
 def test():

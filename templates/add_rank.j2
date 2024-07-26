@@ -1,0 +1,30 @@
+
+{% extends "base.j2" %}
+{% block content %}
+
+    <h1>Current Ranks</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Rank ID</th>
+            <th>Rank Name</th>
+        </tr>
+        <tbody>
+        {% for rank in ranks %}
+            <tr>
+                <td>{{ rank['rankID'] }}</td>
+                <td>{{ rank['rankName'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <h1>Add New Rank</h1>
+    <form action="{{ url_for('add_rank') }}" method="POST">
+        <input type="text" name="rankName" placeholder="Rank Name" required=True />
+        <button type="submit">Add</button>
+    </form>
+
+
+{% endblock %}
