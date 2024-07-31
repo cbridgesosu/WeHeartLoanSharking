@@ -2,34 +2,45 @@
 {% extends "base.j2" %}
 {% block content %}
 
-    <h1>Current Clients</h1>
+    <div class="container">
+        <h1>Current Clients</h1>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Client ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>In Good Standing</th>
-        </tr>
-        <tbody>
-        {% for client in clients %}
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ client['clientID'] }}</td>
-                <td>{{ client['firstName'] }}</td>
-                <td>{{ client['lastName'] }}</td>
-                <td>{{ client['inGoodStanding'] }}</td>
+                <th>Client ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>In Good Standing</th>
             </tr>
-        {% endfor %}
-    </table>
+            <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client['clientID'] }}</td>
+                    <td>{{ client['firstName'] }}</td>
+                    <td>{{ client['lastName'] }}</td>
+                    <td>{{ client['inGoodStanding'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
+    <div class="container">
+        <h1>Add New Client</h1>
+        <form action="{{ url_for('add_client') }}" method="POST">
+            <div class="row">
+                <div class="col-5">
+                    <input class="form-control mx-3 mb-3" type="text" name="firstName" placeholder="First Name" required=True />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                <input class="form-control mx-3 mb-3" type="text" name="lastName" placeholder="Last Name" />
+                </div>
+            </div>
+            <button class="btn btn-outline-primary col-2 mx-3" type="submit">Add</button>
 
-    <h1>Add New Client</h1>
-    <form action="{{ url_for('add_client') }}" method="POST">
-        <input type="text" name="firstName" placeholder="First Name" required=True />
-        <input type="text" name="lastName" placeholder="Last Name" />
-        <button type="submit">Add</button>
-    </form>
-
+        </form>
+    </div>
 
 {% endblock %}
