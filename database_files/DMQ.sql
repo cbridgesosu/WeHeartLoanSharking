@@ -30,6 +30,9 @@ SELECT * FROM Collections;
 -- Retrieve all Rank information to display on Add Rank page
 SELECT * FROM Ranks;
 
+-- SELECT Rank Names to dynamically populate dropdown when adding an Enforcer
+SELECT rankName FROM Ranks;
+
 -- add a new client
 INSERT INTO Clients (firstName, lastName, inGoodStanding) VALUES (:fnameInput, :lnameInput, 0);
 
