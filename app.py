@@ -12,19 +12,22 @@ enforcers = [
         "enforcerID": 1,
         "firstName": "Sergei",
         "lastName": None,
-        "startDate": "1990-01-01"
+        "startDate": "1990-01-01",
+        "rankID": 1
     },
     {
         "enforcerID": 2,
         "firstName": "Elena",
         "lastName": "Stark",
-        "startDate": "2015-08-22"
+        "startDate": "2015-08-22",
+        "rankID": 2
     },
     {
         "enforcerID": 3,
         "firstName": "Georg",
         "lastName": "Rulin",
-        "startDate": "2007-02-27"
+        "startDate": "2007-02-27",
+        "rankID": "NULL"
     }
 ]
 
@@ -205,7 +208,8 @@ def add_enforcer():
             print("Enforcer added.")
             enforcers.append({"firstName": request.form.get("firstName"), 
                               "lastName": request.form.get("lastName"), 
-                              "startDate": request.form.get("startDate")})
+                              "startDate": request.form.get("startDate"),
+                              "rankID": request.form.get("rankID")})
     return render_template("add_enforcer.j2", enforcers=enforcers)
 
 @app.route('/add_client', methods=["POST", "GET"])

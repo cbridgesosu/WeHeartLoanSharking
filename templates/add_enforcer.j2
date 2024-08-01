@@ -11,6 +11,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Start Date</th>
+            <th>Rank ID</th>
         </tr>
         <tbody>
         {% for enforcer in enforcers %}
@@ -19,6 +20,7 @@
                 <td>{{ enforcer['firstName'] }}</td>
                 <td>{{ enforcer['lastName'] }}</td>
                 <td>{{ enforcer['startDate'] }}</td>
+                <td>{{ enforcer['rankID'] }}</td>
             </tr>
         {% endfor %}
     </table>
@@ -29,6 +31,7 @@
         <input type="text" name="firstName" placeholder="First Name" required=True />
         <input type="text" name="lastName" placeholder="Last Name" />
         <input type="date" name="startDate" required=True /> 
+        <input type="number" name="rankID" placeholder="Rank ID" required=True />
         <button type="submit">Add</button>
     </form>
 
