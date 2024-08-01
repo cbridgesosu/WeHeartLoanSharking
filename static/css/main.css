@@ -1,0 +1,10 @@
+
+
+body {
+    background-image: url("../img/ocean.jpg");
+    background-size: cover;
+}
+
+.container {
+    background-color: rgba(3, 101, 78, 0.705);
+}
