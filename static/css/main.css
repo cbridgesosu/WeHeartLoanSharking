@@ -5,6 +5,6 @@ body {
     background-size: cover;
 }
 
-.container {
+.container, .navbar {
     background-color: rgba(3, 101, 78, 0.705);
 }

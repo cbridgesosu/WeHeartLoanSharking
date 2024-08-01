@@ -11,18 +11,29 @@
 </head>
 
 <body>
-    <nav>
-        <a href="{{ url_for('root') }}">HOME</a> 
-        <a href="{{ url_for('add_enforcer') }}">ADD ENFORCER</a> 
-        <a href="{{ url_for('add_client') }}">ADD CLIENT</a> 
-        <a href="{{ url_for('update_client') }}">UPDATE CLIENT</a> 
-        <a href="{{ url_for('delete_client') }}">DELETE CLIENT</a> 
-        <a href="{{ url_for('assign_client') }}">ASSIGN CLIENT</a> 
-        <a href="{{ url_for('add_location') }}">ADD LOCATION</a> 
-        <a href="{{ url_for('add_loan') }}">ADD LOAN</a> 
-        <a href="{{ url_for('add_collection') }}">ADD COLLECTION</a> 
-        <a href="{{ url_for('add_rank') }}">ADD RANK</a> 
-        
+    <nav class="navbar navbar-expand navbar-light text-secondary ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="../static/img/logo.jpg" alt="" width="50" height="50" class="d-inline-block align-text-top rounded-circle">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link active link-warning" href="{{ url_for('root') }}">HOME</a>
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('add_enforcer') }}">ADD ENFORCER</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('add_client') }}">ADD CLIENT</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('update_client') }}">UPDATE CLIENT</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('delete_client') }}">DELETE CLIENT</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('assign_client') }}">ASSIGN CLIENT</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('add_location') }}">ADD LOCATION</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('add_loan') }}">ADD LOAN</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('add_collection') }}">ADD COLLECTION</a> 
+                    <a class="nav-item nav-link link-warning" href="{{ url_for('add_rank') }}">ADD RANK</a> 
+                </div>
+            </div>
+        </div>
     </nav>
 
 
