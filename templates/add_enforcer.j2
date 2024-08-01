@@ -2,38 +2,44 @@
 {% extends "base.j2" %}
 {% block content %}
 
-    <h1>Current Enforcers</h1>
+    <div class="container mt-3 pb-3 rounded-top text-warning">
+        <h1>Current Enforcers</h1>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Enforcer ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Start Date</th>
-            <th>Rank ID</th>
-        </tr>
-        <tbody>
-        {% for enforcer in enforcers %}
+        <table class="table table-striped table-bordered">
+            <thead class="table-success">
             <tr>
-                <td>{{ enforcer['enforcerID'] }}</td>
-                <td>{{ enforcer['firstName'] }}</td>
-                <td>{{ enforcer['lastName'] }}</td>
-                <td>{{ enforcer['startDate'] }}</td>
-                <td>{{ enforcer['rankID'] }}</td>
+                <th>Enforcer ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Start Date</th>
+                <th>Rank ID</th>
             </tr>
-        {% endfor %}
-    </table>
+            <tbody>
+            {% for enforcer in enforcers %}
+                <tr>
+                    <td>{{ enforcer['enforcerID'] }}</td>
+                    <td>{{ enforcer['firstName'] }}</td>
+                    <td>{{ enforcer['lastName'] }}</td>
+                    <td>{{ enforcer['startDate'] }}</td>
+                    <td>{{ enforcer['rankID'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
-
-    <h1>Add New Enforcer</h1>
-    <form action="{{ url_for('add_enforcer') }}" method="POST">
-        <input type="text" name="firstName" placeholder="First Name" required=True />
-        <input type="text" name="lastName" placeholder="Last Name" />
-        <input type="date" name="startDate" required=True /> 
-        <input type="number" name="rankID" placeholder="Rank ID" required=True />
-        <button type="submit">Add</button>
-    </form>
-
+    <div class="container rounded-bottom pb-3 text-warning">
+        <h1>Add New Enforcer</h1>
+        <form action="{{ url_for('add_enforcer') }}" method="POST">
+            <div class="row">
+                <div class="col-5">
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="text" name="firstName" placeholder="First Name" required=True />
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="text" name="lastName" placeholder="Last Name" />
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="date" name="startDate" required=True /> 
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="number" name="rankID" placeholder="Rank ID" required=True />
+                    <button class="btn btn-warning col-5 mx-3" type="submit">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}
