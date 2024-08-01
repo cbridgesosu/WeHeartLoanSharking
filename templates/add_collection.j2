@@ -2,56 +2,68 @@
 {% extends "base.j2" %}
 {% block content %}
 
-    <h1>Payment Collections</h1>
+    <div class="container mt-3 pb-3 rounded-top text-warning">
+        <h1>Payment Collections</h1>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Collection ID</th>
-            <th>Enforcer ID</th>
-            <th>Loan ID</th>
-            <th>Business ID</th>
-            <th>Amount</th>
-            <th>Date</th>
-        </tr>
-        <tbody>
-        {% for collection in collections %}
+        <table class="table table-striped table-bordered">
+            <thead>
             <tr>
-                <td>{{ collection['collectionID'] }}</td>
-                <td>{{ collection['enforcerID'] }}</td>
-                <td>{{ collection['loanID'] }}</td>
-                <td>{{ collection['businessID'] }}</td>
-                <td>{{ collection['amountCollected'] }}</td>
-                <td>{{ collection['dateOfCollection'] }}</td>
+                <th>Collection ID</th>
+                <th>Enforcer ID</th>
+                <th>Loan ID</th>
+                <th>Business ID</th>
+                <th>Amount</th>
+                <th>Date</th>
             </tr>
-        {% endfor %}
-    </table>
-
-
-    <h1>Add New Collection</h1>
-    <form action="{{ url_for('add_collection') }}" method="POST">
-        <label for="select_enforcer">Select Enforcer:</label>
-        <select id="select_enforecer" name="select_enforcer">
-            {% for enforcer in enforcers %}
-                <option value={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+            <tbody>
+            {% for collection in collections %}
+                <tr>
+                    <td>{{ collection['collectionID'] }}</td>
+                    <td>{{ collection['enforcerID'] }}</td>
+                    <td>{{ collection['loanID'] }}</td>
+                    <td>{{ collection['businessID'] }}</td>
+                    <td>{{ collection['amountCollected'] }}</td>
+                    <td>{{ collection['dateOfCollection'] }}</td>
+                </tr>
             {% endfor %}
-        </select>
+        </table>
+    </div>
 
-        <label for="select_loan">Select Loan:</label>
-        <select id="select_loan" name="select_loan">
-            {% for loan in loans %}
-                <option value={{ loan["loanID"] }}>{{ loan["loanID"] }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="select_location">Collection Location:</label>
-        <select id="select_location" name="select_location">
-            {% for location in locations %}
-                <option value={{ location["businessID"] }}>{{ location["businessID"] }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Add</button>
-    </form>
-
+    <div class="container rounded-bottom pb-3 text-warning">
+        <h1>Add New Collection</h1>
+        <form action="{{ url_for('add_collection') }}" method="POST">
+            <div class="row">
+                <div class="col-4">
+                    <label for="select_enforcer">Select Enforcer:</label>
+                    <select class="form-select bg-secondary-subtle" id="select_enforecer" name="select_enforcer">
+                        {% for enforcer in enforcers %}
+                            <option value={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label for="select_loan">Select Loan:</label>
+                    <select class="form-select bg-secondary-subtle" id="select_loan" name="select_loan">
+                        {% for loan in loans %}
+                            <option value={{ loan["loanID"] }}>{{ loan["loanID"] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label for="select_location">Collection Location:</label>
+                    <select class="form-select bg-secondary-subtle" id="select_location" name="select_location">
+                        {% for location in locations %}
+                            <option value={{ location["businessID"] }}>{{ location["businessID"] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-warning col-2 mx-3 mt-3" type="submit">Add</button>
+        </form>
+    </div>
 
 {% endblock %}
