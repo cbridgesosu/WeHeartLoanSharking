@@ -2,43 +2,49 @@
 {% extends "base.j2" %}
 {% block content %}
 
-    <h1>Assigned Clients</h1>
+    <div class="container">
+        <h1>Assigned Clients</h1>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Assignment ID</th>
-            <th>Enforcer ID</th>
-            <th>Client ID</th>
-        </tr>
-        <tbody>
-        {% for assignment in enforcer_has_clients %}
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ assignment['enforcerClientID'] }}</td>
-                <td>{{ assignment['enforcerID'] }}</td>
-                <td>{{ assignment['clientID'] }}</td>
+                <th>Assignment ID</th>
+                <th>Enforcer ID</th>
+                <th>Client ID</th>
+                <th>Delete</th>
+                <th>Update</th>
             </tr>
-        {% endfor %}
-    </table>
-
-
-    <h1>Assign Client</h1>
-    <form action="{{ url_for('assign_client') }}" method="POST">
-        <label for="assign_enforcer">Select Enforcer:</label>
-        <select id="assign_enforecer" name="assign_enforcer">
-            {% for enforcer in enforcers %}
-                <option value={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+            <tbody>
+            {% for assignment in enforcer_has_clients %}
+                <tr>
+                    <td>{{ assignment['enforcerClientID'] }}</td>
+                    <td>{{ assignment['enforcerID'] }}</td>
+                    <td>{{ assignment['clientID'] }}</td>
+                    <td><a href="delete_assignemnt#" >Delete</a></td>
+                    <td><a href="update_assignment#" >Update</a></td>
+                </tr>
             {% endfor %}
-        </select>
+        </table>
+    </div>
 
-        <label for="assign_client">Select Client:</label>
-        <select id="assign_client" name="assign_client">
-            {% for client in clients %}
-                <option value={{ client["firstName"] }}>{{ client["firstName"] }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Add</button>
-    </form>
+    <div class="container">
+        <h1>Assign Client</h1>
+        <form action="{{ url_for('assign_client') }}" method="POST">
+            <label for="assign_enforcer">Select Enforcer:</label>
+            <select id="assign_enforecer" name="assign_enforcer">
+                {% for enforcer in enforcers %}
+                    <option value={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+                {% endfor %}
+            </select>
 
+            <label for="assign_client">Select Client:</label>
+            <select id="assign_client" name="assign_client">
+                {% for client in clients %}
+                    <option value={{ client["firstName"] }}>{{ client["firstName"] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Add</button>
+        </form>
+    </div>
 
 {% endblock %}
