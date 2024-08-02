@@ -5,6 +5,6 @@
 #       URL: https://jinja.palletsprojects.com/en/2.11.x/templates/
 # Bootstrap styling adapted from documentation at
 #       URL: https://getbootstrap.com/docs/5.3/getting-started/introduction/
-# Logo image generated from XXXXXXX tool on August 1st 2024 using the prompt:
-#       "Shark Enforcer" or whatever
-#       URL: 
+# Logo image generated from Canva image generator tool on August 1st 2024 using the prompt:
+#       "Cartoon shark with an orange background"
+#       URL: https://www.canva.com/ai-image-generator/
