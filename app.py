@@ -230,9 +230,10 @@ def add_client():
                               "loansRemaining": 0})
     return render_template("add_client.j2", clients=clients)
 
+# Routes for assign_client page
 @app.route('/assign_client', methods=["POST", "GET"])
 def assign_client():
-    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients;'
+    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients ORDER BY enforcerHasClientID;'
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
 
@@ -255,6 +256,19 @@ def assign_client():
             print("Client assigned.")
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
+@app.route('/delete_assignment/<int:enforcerHasClientID>')
+def delete_assignment(enforcerHasClientID):
+    query_Delete_Assignment = "DELETE FROM EnforcersHasClients WHERE enforcerHasClientID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Assignment, (enforcerHasClientID,))
+    mysql.connection.commit()
+
+    return redirect('/assign_client')
+
+
+
+
+# Routes for Clients page
 @app.route('/update_client', methods=["POST", "GET"])
 def update_client():
     if request.method == "POST":
