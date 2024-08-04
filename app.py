@@ -232,7 +232,7 @@ def add_client():
 
 # Routes for assign_client page
 @app.route('/assign_client', methods=["POST", "GET"])
-def assign_client():
+def assign_client():  
     query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients ORDER BY enforcerHasClientID;'
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
@@ -249,12 +249,10 @@ def assign_client():
     if request.method == "POST":
             clientID = request.form.get('assign_client')
             enforcerID = request.form.get('assign_enforcer')
-
             query_Add_Assignment = f"INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES ({enforcerID}, {clientID});"
             cur.execute(query_Add_Assignment)
             mysql.connection.commit()
             print("Client assigned.")
-            return redirect('assign_client')
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
 @app.route('/delete_assignment/<int:enforcerHasClientID>')
@@ -324,4 +322,4 @@ if __name__ == "__main__":
     #                                 ^^^^
     #              You can replace this number with any valid port
     
-    app.run(port=port) 
+    app.run(port=port, debug=True) 
