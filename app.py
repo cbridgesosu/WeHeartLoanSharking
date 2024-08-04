@@ -253,6 +253,7 @@ def assign_client():
             cur.execute(query_Add_Assignment)
             mysql.connection.commit()
             print("Client assigned.")
+            return redirect('assign_client')
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
 @app.route('/delete_assignment/<int:enforcerHasClientID>')
