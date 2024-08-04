@@ -52,7 +52,7 @@
                     <label for="assign_enforcer">Select Enforcer:</label>
                     <select class="form-select bg-secondary-subtle" id="assign_enforecer" name="assign_enforcer">
                         {% for enforcer in enforcers %}
-                            <option value={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+                            <option value={{ enforcer["enforcerID"] }}>{{ enforcer["firstName"] }} {% if enforcer["lastName"] != None %} {{ enforcer["lastName"] }} {% endif %}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -60,7 +60,7 @@
                     <label for="assign_client">Select Client:</label>
                     <select class="form-select bg-secondary-subtle" id="assign_client" name="assign_client">
                         {% for client in clients %}
-                            <option value={{ client["firstName"] }}>{{ client["firstName"] }}</option>
+                            <option value={{ client["clientID"] }}>{{ client["firstName"] }} {% if client["lastName"] != None %} {{ client["lastName"] }} {% endif %}</option>
                         {% endfor %}
                     </select>
                 </div>

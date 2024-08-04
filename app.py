@@ -53,28 +53,28 @@ clients = [
     }
 ]
 
-# enforcer_has_clients = [
-#     {
-#         'enforcerClientID': 1,
-#         'enforcerID': 1,
-#         'clientID': 3
-#     },
-#     {
-#         'enforcerClientID': 2,
-#         'enforcerID': 2,
-#         'clientID': 1
-#     },
-#     {
-#         'enforcerClientID': 3,
-#         'enforcerID': 3,
-#         'clientID': 3
-#     },
-#     {
-#         'enforcerClientID': 4,
-#         'enforcerID': 2,
-#         'clientID': 3
-#     },
-# ]
+enforcer_has_clients = [
+    {
+        'enforcerClientID': 1,
+        'enforcerID': 1,
+        'clientID': 3
+    },
+    {
+        'enforcerClientID': 2,
+        'enforcerID': 2,
+        'clientID': 1
+    },
+    {
+        'enforcerClientID': 3,
+        'enforcerID': 3,
+        'clientID': 3
+    },
+    {
+        'enforcerClientID': 4,
+        'enforcerID': 2,
+        'clientID': 3
+    },
+]
 
 locations = [
      {
@@ -232,13 +232,26 @@ def add_client():
 
 @app.route('/assign_client', methods=["POST", "GET"])
 def assign_client():
-    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients'
+    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients;'
+    query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
+
     cur = mysql.connection.cursor()
     cur.execute(query_EnforcersHasClients)
     enforcer_has_clients = cur.fetchall()
-    print(enforcer_has_clients)
+    cur.execute(query_Clients)
+    clients = cur.fetchall()
+    cur.execute(query_Enforcers)
+    enforcers = cur.fetchall()
+    print(enforcer_has_clients, clients, enforcers)
 
     if request.method == "POST":
+            clientID = request.form.get('assign_client')
+            enforcerID = request.form.get('assign_enforcer')
+
+            query_Add_Assignment = f"INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES ({enforcerID}, {clientID});"
+            cur.execute(query_Add_Assignment)
+            mysql.connection.commit()
             print("Client assigned.")
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
