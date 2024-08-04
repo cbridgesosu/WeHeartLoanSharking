@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, json
 import os
 from dotenv import load_dotenv
+from flask_mysqldb import MySQL
 
 load_dotenv()
 
@@ -52,28 +53,28 @@ clients = [
     }
 ]
 
-enforcer_has_clients = [
-    {
-        'enforcerClientID': 1,
-        'enforcerID': 1,
-        'clientID': 3
-    },
-    {
-        'enforcerClientID': 2,
-        'enforcerID': 2,
-        'clientID': 1
-    },
-    {
-        'enforcerClientID': 3,
-        'enforcerID': 3,
-        'clientID': 3
-    },
-    {
-        'enforcerClientID': 4,
-        'enforcerID': 2,
-        'clientID': 3
-    },
-]
+# enforcer_has_clients = [
+#     {
+#         'enforcerClientID': 1,
+#         'enforcerID': 1,
+#         'clientID': 3
+#     },
+#     {
+#         'enforcerClientID': 2,
+#         'enforcerID': 2,
+#         'clientID': 1
+#     },
+#     {
+#         'enforcerClientID': 3,
+#         'enforcerID': 3,
+#         'clientID': 3
+#     },
+#     {
+#         'enforcerClientID': 4,
+#         'enforcerID': 2,
+#         'clientID': 3
+#     },
+# ]
 
 locations = [
      {
@@ -192,8 +193,15 @@ ranks = [
 ]
 
 # Configuration
-
 app = Flask(__name__)
+
+app.config['MYSQL_HOST'] = 'classmysql.engr.oregonstate.edu'
+app.config['MYSQL_USER'] = os.getenv('DB_NAME')
+app.config['MYSQL_PASSWORD'] = os.getenv('DB_PASSWORD') 
+app.config['MYSQL_DB'] = os.getenv('DB_NAME')
+app.config['MYSQL_CURSORCLASS'] = "DictCursor"
+
+mysql = MySQL(app)
 
 
 # Routes 
@@ -224,6 +232,12 @@ def add_client():
 
 @app.route('/assign_client', methods=["POST", "GET"])
 def assign_client():
+    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients'
+    cur = mysql.connection.cursor()
+    cur.execute(query_EnforcersHasClients)
+    enforcer_has_clients = cur.fetchall()
+    print(enforcer_has_clients)
+
     if request.method == "POST":
             print("Client assigned.")
     return render_template("assign_client.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
