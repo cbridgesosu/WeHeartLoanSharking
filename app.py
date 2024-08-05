@@ -264,7 +264,7 @@ def enforcers_has_clients():
     clients = cur.fetchall()
     cur.execute(query_Enforcers)
     enforcers = cur.fetchall()
-    print(enforcer_has_clients, clients, enforcers)
+    # print(enforcer_has_clients, clients, enforcers)
 
     # Handles add new enforcer_has_client form request
     if request.method == "POST":
@@ -273,9 +273,12 @@ def enforcers_has_clients():
 
             # Insert query for add new enforcers_has_client 
             query_Add_Assignment = "INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES (%s, %s);"
-            cur.execute(query_Add_Assignment, (enforcerID, clientID))
-            mysql.connection.commit()
-            print("Client assigned.")
+            try:
+                cur.execute(query_Add_Assignment, (enforcerID, clientID))
+                mysql.connection.commit()
+                print("Client assigned.")
+            except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
             return redirect('enforcers_has_clients')
     
     return render_template("enforcers_has_clients.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
