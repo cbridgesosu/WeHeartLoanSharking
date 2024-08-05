@@ -256,8 +256,8 @@ def enforcers_has_clients():
             enforcerID = request.form.get('assign_enforcer')
 
             # Insert query for add new enforcers_has_client 
-            query_Add_Assignment = f"INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES ({enforcerID}, {clientID});"
-            cur.execute(query_Add_Assignment)
+            query_Add_Assignment = "INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES (%s, %s);"
+            cur.execute(query_Add_Assignment, (enforcerID, clientID))
             mysql.connection.commit()
             print("Client assigned.")
             return redirect('enforcers_has_clients')
@@ -266,6 +266,7 @@ def enforcers_has_clients():
 
 @app.route('/delete_assignment/<int:enforcerHasClientID>')
 def delete_assignment(enforcerHasClientID):
+    # Query to delete enforcer_has_client entry with selected ID
     query_Delete_Assignment = "DELETE FROM EnforcersHasClients WHERE enforcerHasClientID = '%s';"
     cur = mysql.connection.cursor()
     cur.execute(query_Delete_Assignment, (enforcerHasClientID,))
