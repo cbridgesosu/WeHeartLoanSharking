@@ -295,15 +295,13 @@ def delete_assignment(enforcerHasClientID):
 
 @app.route('/edit_assignment/<int:id>', methods=["POST", "GET"])
 def edit_assignment(id):
-    #return f"you gave id: {id}"
-    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients ORDER BY enforcerHasClientID;'
+    # Setup queries for Clients, Enforcers and the Selected relationship to edit.
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
     query_EnforcersHasClients_selected = "SELECT * FROM EnforcersHasClients WHERE enforcerHasClientID = %s;" % (id)
 
+    # Perform the queries to get the necessary information from the db to render the page
     cur = mysql.connection.cursor()
-    cur.execute(query_EnforcersHasClients)
-    enforcer_has_clients = cur.fetchall()
     cur.execute(query_Clients)
     clients = cur.fetchall()
     cur.execute(query_Enforcers)
@@ -311,12 +309,14 @@ def edit_assignment(id):
     cur.execute(query_EnforcersHasClients_selected)
     selection = cur.fetchall()
     if request.method == "GET":
-        return render_template("enforcers_has_clients_update.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients, id_num=id, selection=selection)
-    else:
-        #return "You are trying to edit the following: %s" % (selection)
+        # Render the page if the request is a GET
+        return render_template("enforcers_has_clients_update.j2", enforcers=enforcers, clients=clients, selection=selection)
+    elif request.method == "POST":
+        # Perform the update in the database with the values supplied by the user if the request is a POST
         clientID = request.form.get('assign_client')
         enforcerID = request.form.get('assign_enforcer')
         query_Update_Assignment = f"UPDATE EnforcersHasClients SET EnforcersHasClients.clientID = {clientID}, EnforcersHasClients.enforcerID = {enforcerID} WHERE EnforcersHasClients.enforcerHasClientID = {id};"
+        # If an illegal set of values is given this will catch the database error.
         try:
             cur.execute(query_Update_Assignment)
             mysql.connection.commit()

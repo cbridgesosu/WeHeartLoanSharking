@@ -6,8 +6,8 @@
     </div>
 
     <div class="container rounded-bottom pb-3 text-warning">
-        <h1>Edit Enforcers Has Clients {{id_num}}</h1>
-        <form action="/edit_assignment/{{id_num}}" method="POST">
+        <h1>Edit Enforcers Has Clients {{selection[0]["enforcerHasClientID"]}}</h1>
+        <form action="/edit_assignment/{{selection[0]["enforcerHasClientID"]}}" method="POST">
             <div class="row">
                 <div class="col">
                     <label for="assign_enforcer">Select Enforcer:</label>
