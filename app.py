@@ -317,8 +317,11 @@ def edit_assignment(id):
         clientID = request.form.get('assign_client')
         enforcerID = request.form.get('assign_enforcer')
         query_Update_Assignment = f"UPDATE EnforcersHasClients SET EnforcersHasClients.clientID = {clientID}, EnforcersHasClients.enforcerID = {enforcerID} WHERE EnforcersHasClients.enforcerHasClientID = {id};"
-        cur.execute(query_Update_Assignment)
-        mysql.connection.commit()
+        try:
+            cur.execute(query_Update_Assignment)
+            mysql.connection.commit()
+        except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
         return redirect('/enforcers_has_clients')
 
 
