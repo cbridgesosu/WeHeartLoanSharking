@@ -290,6 +290,7 @@ def delete_client():
             print("Client deleted.")
     return render_template("delete_client.j2", clients=clients)
 
+# Routes for Locations page
 @app.route('/add_location', methods=["POST", "GET"])
 def add_location():
     if request.method == "POST":
@@ -297,6 +298,7 @@ def add_location():
 
     return render_template("add_location.j2", locations=locations, clients=clients)
 
+# Routes for Loans page
 @app.route('/add_loan', methods=["POST", "GET"])
 def add_loan():
     if request.method == "POST":
@@ -304,6 +306,7 @@ def add_loan():
 
     return render_template("add_loan.j2", loans=loans, clients=clients)
 
+# Routes for Collections page
 @app.route('/add_collection', methods=["POST", "GET"])
 def add_collection():
     if request.method == "POST":
@@ -311,6 +314,7 @@ def add_collection():
 
     return render_template("add_collection.j2", collections=collections, loans=loans, enforcers=enforcers, locations=locations)
 
+# Routes for Ranks page
 @app.route('/add_rank', methods=["POST", "GET"])
 def add_rank():
     if request.method == "POST":
