@@ -204,12 +204,13 @@ app.config['MYSQL_CURSORCLASS'] = "DictCursor"
 mysql = MySQL(app)
 
 
-# Routes 
-
+# Route for home page
 @app.route("/")
 def root():
     return render_template("main.j2")
 
+
+# Routes for Enforcers page
 @app.route('/add_enforcer', methods=["POST", "GET"])
 def add_enforcer():
     if request.method == "POST":
@@ -220,6 +221,8 @@ def add_enforcer():
                               "rankID": request.form.get("rankID")})
     return render_template("add_enforcer.j2", enforcers=enforcers)
 
+
+# Routes for Clients page
 @app.route('/add_client', methods=["POST", "GET"])
 def add_client():
     if request.method == "POST":
@@ -230,13 +233,30 @@ def add_client():
                               "loansRemaining": 0})
     return render_template("add_client.j2", clients=clients)
 
+@app.route('/update_client', methods=["POST", "GET"])
+def update_client():
+    if request.method == "POST":
+            print("Client updated.")
+    return render_template("update_client.j2", clients=clients)
+
+@app.route('/delete_client', methods=["POST", "GET"])
+def delete_client():
+    if request.method == "POST":
+            print("Client deleted.")
+    return render_template("delete_client.j2", clients=clients)
+
+
 # Routes for enforcers_has_clients page
 @app.route('/enforcers_has_clients', methods=["POST", "GET"])
 def enforcers_has_clients():  
-    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients ORDER BY enforcerHasClientID;'
+    # Query to populate the display table
+    query_EnforcersHasClients = 'SELECT enforcerHasClientID, Enforcers.firstName, Enforcers.lastName, Clients.firstName, Clients.lastName FROM EnforcersHasClients INNER JOIN Enforcers ON EnforcersHasClients.enforcerID=Enforcers.enforcerID INNER JOIN Clients ON EnforcersHasClients.clientID=Clients.clientID ORDER BY enforcerHasClientID;'
+    # Query to polulate the select client dropdown  
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    # Query to polulate the select enforcer dropdown 
     query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
 
+    # Execute all queries and store json
     cur = mysql.connection.cursor()
     cur.execute(query_EnforcersHasClients)
     enforcer_has_clients = cur.fetchall()
@@ -245,18 +265,23 @@ def enforcers_has_clients():
     cur.execute(query_Enforcers)
     enforcers = cur.fetchall()
 
+    # Handles add new enforcer_has_client form request
     if request.method == "POST":
             clientID = request.form.get('assign_client')
             enforcerID = request.form.get('assign_enforcer')
-            query_Add_Assignment = f"INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES ({enforcerID}, {clientID});"
-            cur.execute(query_Add_Assignment)
+
+            # Insert query for add new enforcers_has_client 
+            query_Add_Assignment = "INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES (%s, %s);"
+            cur.execute(query_Add_Assignment, (enforcerID, clientID))
             mysql.connection.commit()
             print("Client assigned.")
             return redirect('enforcers_has_clients')
+    
     return render_template("enforcers_has_clients.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
 @app.route('/delete_assignment/<int:enforcerHasClientID>')
 def delete_assignment(enforcerHasClientID):
+    # Query to delete enforcer_has_client entry with selected ID
     query_Delete_Assignment = "DELETE FROM EnforcersHasClients WHERE enforcerHasClientID = '%s';"
     cur = mysql.connection.cursor()
     cur.execute(query_Delete_Assignment, (enforcerHasClientID,))
@@ -293,21 +318,7 @@ def edit_assignment(id):
         return redirect('/enforcers_has_clients')
 
 
-
-
-# Routes for Clients page
-@app.route('/update_client', methods=["POST", "GET"])
-def update_client():
-    if request.method == "POST":
-            print("Client updated.")
-    return render_template("update_client.j2", clients=clients)
-
-@app.route('/delete_client', methods=["POST", "GET"])
-def delete_client():
-    if request.method == "POST":
-            print("Client deleted.")
-    return render_template("delete_client.j2", clients=clients)
-
+# Routes for Locations page
 @app.route('/add_location', methods=["POST", "GET"])
 def add_location():
     if request.method == "POST":
@@ -315,6 +326,7 @@ def add_location():
 
     return render_template("add_location.j2", locations=locations, clients=clients)
 
+# Routes for Loans page
 @app.route('/add_loan', methods=["POST", "GET"])
 def add_loan():
     if request.method == "POST":
@@ -322,6 +334,7 @@ def add_loan():
 
     return render_template("add_loan.j2", loans=loans, clients=clients)
 
+# Routes for Collections page
 @app.route('/add_collection', methods=["POST", "GET"])
 def add_collection():
     if request.method == "POST":
@@ -329,6 +342,7 @@ def add_collection():
 
     return render_template("add_collection.j2", collections=collections, loans=loans, enforcers=enforcers, locations=locations)
 
+# Routes for Ranks page
 @app.route('/add_rank', methods=["POST", "GET"])
 def add_rank():
     if request.method == "POST":
@@ -337,10 +351,6 @@ def add_rank():
             ranks.append({"rankName": request.form.get("rankName"),
                           "rankID": len(ranks) +1})
     return render_template("add_rank.j2", ranks=ranks)
-
-@app.route('/test')
-def test():
-    return render_template("test.j2")
 
 
 # Listener
