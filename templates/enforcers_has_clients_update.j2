@@ -1,0 +1,38 @@
+
+{% extends "base.j2" %}
+{% block content %}
+
+    <div class="container rounded-bottom pb-3 text-warning">
+        <h1>Edit Enforcers Has Clients {{id_num}}</h1>
+        <form action="/edit_assignment/{{id_num}}" method="POST">
+            <div class="row">
+                <div class="col">
+                    <label for="assign_enforcer">Select Enforcer:</label>
+                    <select class="form-select bg-secondary-subtle" id="assign_enforcer" name="assign_enforcer">
+                        {% for enforcer in enforcers %}
+                            {% if enforcer["enforcerID"] == selection[0]["enforcerID"] %}
+                                <option value={{ enforcer["enforcerID"] }} selected> {{ enforcer["firstName"] }} {% if enforcer["lastName"] != None %} {{ enforcer["lastName"] }} {% endif %}</option>
+                            {% else %}
+                                <option value={{ enforcer["enforcerID"] }}> {{ enforcer["firstName"] }} {% if enforcer["lastName"] != None %} {{ enforcer["lastName"] }} {% endif %}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="assign_client">Select Client:</label>
+                    <select class="form-select bg-secondary-subtle" id="assign_client" name="assign_client">
+                        {% for client in clients %}
+                            {% if client["clientID"] == selection[0]["clientID"] %}
+                                <option value={{ client["clientID"] }} selected> {{ client["firstName"] }} {% if client["lastName"] != None %} {{ client["lastName"] }} {% endif %}</option>
+                            {% else %}
+                                <option value={{ client["clientID"] }}> {{ client["firstName"] }} {% if client["lastName"] != None %} {{ client["lastName"] }} {% endif %}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="btn btn-warning col-2 mx-3 mt-3" type="submit">Edit</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

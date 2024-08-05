@@ -244,7 +244,6 @@ def enforcers_has_clients():
     clients = cur.fetchall()
     cur.execute(query_Enforcers)
     enforcers = cur.fetchall()
-    print(enforcer_has_clients, clients, enforcers)
 
     if request.method == "POST":
             clientID = request.form.get('assign_client')
@@ -264,6 +263,34 @@ def delete_assignment(enforcerHasClientID):
     mysql.connection.commit()
 
     return redirect('/enforcers_has_clients')
+
+@app.route('/edit_assignment/<int:id>', methods=["POST", "GET"])
+def edit_assignment(id):
+    #return f"you gave id: {id}"
+    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients ORDER BY enforcerHasClientID;'
+    query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
+    query_EnforcersHasClients_selected = "SELECT * FROM EnforcersHasClients WHERE enforcerHasClientID = %s;" % (id)
+
+    cur = mysql.connection.cursor()
+    cur.execute(query_EnforcersHasClients)
+    enforcer_has_clients = cur.fetchall()
+    cur.execute(query_Clients)
+    clients = cur.fetchall()
+    cur.execute(query_Enforcers)
+    enforcers = cur.fetchall()
+    cur.execute(query_EnforcersHasClients_selected)
+    selection = cur.fetchall()
+    if request.method == "GET":
+        return render_template("enforcers_has_clients_update.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients, id_num=id, selection=selection)
+    else:
+        #return "You are trying to edit the following: %s" % (selection)
+        clientID = request.form.get('assign_client')
+        enforcerID = request.form.get('assign_enforcer')
+        query_Update_Assignment = f"UPDATE EnforcersHasClients SET EnforcersHasClients.clientID = {clientID}, EnforcersHasClients.enforcerID = {enforcerID} WHERE EnforcersHasClients.enforcerHasClientID = {id};"
+        cur.execute(query_Update_Assignment)
+        mysql.connection.commit()
+        return redirect('/enforcers_has_clients')
 
 
 
@@ -323,4 +350,4 @@ if __name__ == "__main__":
     #                                 ^^^^
     #              You can replace this number with any valid port
     
-    app.run(port=port, debug=True) 
+    app.run(port=port) 
