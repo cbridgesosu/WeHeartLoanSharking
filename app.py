@@ -250,7 +250,7 @@ def delete_client():
 @app.route('/enforcers_has_clients', methods=["POST", "GET"])
 def enforcers_has_clients():  
     # Query to populate the display table
-    query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients ORDER BY enforcerHasClientID;'
+    query_EnforcersHasClients = 'SELECT enforcerHasClientID, Enforcers.firstName, Enforcers.lastName, Clients.firstName, Clients.lastName FROM EnforcersHasClients INNER JOIN Enforcers ON EnforcersHasClients.enforcerID=Enforcers.enforcerID INNER JOIN Clients ON EnforcersHasClients.clientID=Clients.clientID ORDER BY enforcerHasClientID;'
     # Query to polulate the select client dropdown  
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     # Query to polulate the select enforcer dropdown 
