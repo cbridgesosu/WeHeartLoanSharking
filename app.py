@@ -53,28 +53,28 @@ clients = [
     }
 ]
 
-enforcer_has_clients = [
-    {
-        'enforcerClientID': 1,
-        'enforcerID': 1,
-        'clientID': 3
-    },
-    {
-        'enforcerClientID': 2,
-        'enforcerID': 2,
-        'clientID': 1
-    },
-    {
-        'enforcerClientID': 3,
-        'enforcerID': 3,
-        'clientID': 3
-    },
-    {
-        'enforcerClientID': 4,
-        'enforcerID': 2,
-        'clientID': 3
-    },
-]
+# enforcer_has_clients = [
+#     {
+#         'enforcerClientID': 1,
+#         'enforcerID': 1,
+#         'clientID': 3
+#     },
+#     {
+#         'enforcerClientID': 2,
+#         'enforcerID': 2,
+#         'clientID': 1
+#     },
+#     {
+#         'enforcerClientID': 3,
+#         'enforcerID': 3,
+#         'clientID': 3
+#     },
+#     {
+#         'enforcerClientID': 4,
+#         'enforcerID': 2,
+#         'clientID': 3
+#     },
+# ]
 
 locations = [
      {
