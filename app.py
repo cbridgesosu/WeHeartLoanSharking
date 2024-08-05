@@ -233,10 +233,14 @@ def add_client():
 # Routes for enforcers_has_clients page
 @app.route('/enforcers_has_clients', methods=["POST", "GET"])
 def enforcers_has_clients():  
+    # Query to populate the display table
     query_EnforcersHasClients = 'SELECT * FROM EnforcersHasClients ORDER BY enforcerHasClientID;'
+    # Query to polulate the select client dropdown  
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    # Query to polulate the select enforcer dropdown 
     query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
 
+    # Execute all queries and store json
     cur = mysql.connection.cursor()
     cur.execute(query_EnforcersHasClients)
     enforcer_has_clients = cur.fetchall()
@@ -246,14 +250,18 @@ def enforcers_has_clients():
     enforcers = cur.fetchall()
     print(enforcer_has_clients, clients, enforcers)
 
+    # Handles add new enforcer_has_client form request
     if request.method == "POST":
             clientID = request.form.get('assign_client')
             enforcerID = request.form.get('assign_enforcer')
+
+            # Insert query for add new enforcers_has_client 
             query_Add_Assignment = f"INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES ({enforcerID}, {clientID});"
             cur.execute(query_Add_Assignment)
             mysql.connection.commit()
             print("Client assigned.")
             return redirect('enforcers_has_clients')
+    
     return render_template("enforcers_has_clients.j2", enforcers=enforcers, clients=clients, enforcer_has_clients=enforcer_has_clients)
 
 @app.route('/delete_assignment/<int:enforcerHasClientID>')
