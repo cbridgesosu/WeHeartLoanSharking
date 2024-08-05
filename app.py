@@ -204,12 +204,13 @@ app.config['MYSQL_CURSORCLASS'] = "DictCursor"
 mysql = MySQL(app)
 
 
-# Routes 
-
+# Route for home page
 @app.route("/")
 def root():
     return render_template("main.j2")
 
+
+# Routes for Enforcers page
 @app.route('/add_enforcer', methods=["POST", "GET"])
 def add_enforcer():
     if request.method == "POST":
@@ -220,6 +221,8 @@ def add_enforcer():
                               "rankID": request.form.get("rankID")})
     return render_template("add_enforcer.j2", enforcers=enforcers)
 
+
+# Routes for Clients page
 @app.route('/add_client', methods=["POST", "GET"])
 def add_client():
     if request.method == "POST":
@@ -229,6 +232,19 @@ def add_client():
                               "inGoodStanding": True,
                               "loansRemaining": 0})
     return render_template("add_client.j2", clients=clients)
+
+@app.route('/update_client', methods=["POST", "GET"])
+def update_client():
+    if request.method == "POST":
+            print("Client updated.")
+    return render_template("update_client.j2", clients=clients)
+
+@app.route('/delete_client', methods=["POST", "GET"])
+def delete_client():
+    if request.method == "POST":
+            print("Client deleted.")
+    return render_template("delete_client.j2", clients=clients)
+
 
 # Routes for enforcers_has_clients page
 @app.route('/enforcers_has_clients', methods=["POST", "GET"])
@@ -275,21 +291,6 @@ def delete_assignment(enforcerHasClientID):
     return redirect('/enforcers_has_clients')
 
 
-
-
-# Routes for Clients page
-@app.route('/update_client', methods=["POST", "GET"])
-def update_client():
-    if request.method == "POST":
-            print("Client updated.")
-    return render_template("update_client.j2", clients=clients)
-
-@app.route('/delete_client', methods=["POST", "GET"])
-def delete_client():
-    if request.method == "POST":
-            print("Client deleted.")
-    return render_template("delete_client.j2", clients=clients)
-
 # Routes for Locations page
 @app.route('/add_location', methods=["POST", "GET"])
 def add_location():
@@ -323,10 +324,6 @@ def add_rank():
             ranks.append({"rankName": request.form.get("rankName"),
                           "rankID": len(ranks) +1})
     return render_template("add_rank.j2", ranks=ranks)
-
-@app.route('/test')
-def test():
-    return render_template("test.j2")
 
 
 # Listener
