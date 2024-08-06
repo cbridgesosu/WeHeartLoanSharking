@@ -53,28 +53,28 @@ clients = [
     }
 ]
 
-enforcer_has_clients = [
-    {
-        'enforcerClientID': 1,
-        'enforcerID': 1,
-        'clientID': 3
-    },
-    {
-        'enforcerClientID': 2,
-        'enforcerID': 2,
-        'clientID': 1
-    },
-    {
-        'enforcerClientID': 3,
-        'enforcerID': 3,
-        'clientID': 3
-    },
-    {
-        'enforcerClientID': 4,
-        'enforcerID': 2,
-        'clientID': 3
-    },
-]
+# enforcer_has_clients = [
+#     {
+#         'enforcerClientID': 1,
+#         'enforcerID': 1,
+#         'clientID': 3
+#     },
+#     {
+#         'enforcerClientID': 2,
+#         'enforcerID': 2,
+#         'clientID': 1
+#     },
+#     {
+#         'enforcerClientID': 3,
+#         'enforcerID': 3,
+#         'clientID': 3
+#     },
+#     {
+#         'enforcerClientID': 4,
+#         'enforcerID': 2,
+#         'clientID': 3
+#     },
+# ]
 
 locations = [
      {
@@ -323,6 +323,37 @@ def delete_assignment(enforcerHasClientID):
 
     return redirect('/enforcers_has_clients')
 
+@app.route('/edit_assignment/<int:id>', methods=["POST", "GET"])
+def edit_assignment(id):
+    # Setup queries for Clients, Enforcers and the Selected relationship to edit.
+    query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    query_Enforcers = 'SELECT enforcerID, firstName, lastName FROM Enforcers;'
+    query_EnforcersHasClients_selected = "SELECT * FROM EnforcersHasClients WHERE enforcerHasClientID = %s;" % (id)
+
+    # Perform the queries to get the necessary information from the db to render the page
+    cur = mysql.connection.cursor()
+    cur.execute(query_Clients)
+    clients = cur.fetchall()
+    cur.execute(query_Enforcers)
+    enforcers = cur.fetchall()
+    cur.execute(query_EnforcersHasClients_selected)
+    selection = cur.fetchall()
+    if request.method == "GET":
+        # Render the page if the request is a GET
+        return render_template("enforcers_has_clients_update.j2", enforcers=enforcers, clients=clients, selection=selection)
+    elif request.method == "POST":
+        # Perform the update in the database with the values supplied by the user if the request is a POST
+        clientID = request.form.get('assign_client')
+        enforcerID = request.form.get('assign_enforcer')
+        query_Update_Assignment = f"UPDATE EnforcersHasClients SET EnforcersHasClients.clientID = {clientID}, EnforcersHasClients.enforcerID = {enforcerID} WHERE EnforcersHasClients.enforcerHasClientID = {id};"
+        # If an illegal set of values is given this will catch the database error.
+        try:
+            cur.execute(query_Update_Assignment)
+            mysql.connection.commit()
+        except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
+        return redirect('/enforcers_has_clients')
+
 
 # Routes for Locations page
 @app.route('/add_location', methods=["POST", "GET"])
@@ -366,4 +397,4 @@ if __name__ == "__main__":
     #                                 ^^^^
     #              You can replace this number with any valid port
     
-    app.run(port=port, debug=True) 
+    app.run(port=port) 

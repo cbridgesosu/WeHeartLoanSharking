@@ -64,3 +64,21 @@ DELETE FROM Clients WHERE clientID = :clientID_selected_from_delete_client_page;
 
 -- update a client
 UPDATE Clients SET firstName = :fnameInput, lastName= :lnameInput, inGoodStanding = :inGoodStanding_Input WHERE id= :clientID_selected_from_the_update_form;
+
+-- Query to populate the display table
+SELECT enforcerHasClientID, Enforcers.firstName, Enforcers.lastName, Clients.firstName, Clients.lastName FROM EnforcersHasClients INNER JOIN Enforcers ON EnforcersHasClients.enforcerID=Enforcers.enforcerID INNER JOIN Clients ON EnforcersHasClients.clientID=Clients.clientID ORDER BY enforcerHasClientID;
+
+-- Query to polulate the select client dropdown  
+SELECT clientID, firstName, lastName FROM Clients;
+
+-- Query to polulate the select enforcer dropdown 
+SELECT enforcerID, firstName, lastName FROM Enforcers;
+
+-- Insert query for add new enforcers_has_client 
+INSERT INTO EnforcersHasClients (enforcerID, clientID) VALUES (%s, %s);
+            
+-- Query to delete enforcer_has_client entry with selected ID
+DELETE FROM EnforcersHasClients WHERE enforcerHasClientID = '%s';
+    
+-- Perform the update in the database with the values supplied by the user if the request is a POST
+UPDATE EnforcersHasClients SET EnforcersHasClients.clientID = {clientID}, EnforcersHasClients.enforcerID = {enforcerID} WHERE EnforcersHasClients.enforcerHasClientID = {id};
