@@ -12,7 +12,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Start Date</th>
-                <th>Rank ID</th>
+                <th>Rank Name</th>
             </tr>
             <tbody>
             {% for enforcer in enforcers %}
@@ -21,7 +21,7 @@
                     <td>{{ enforcer['firstName'] }}</td>
                     <td>{{ enforcer['lastName'] }}</td>
                     <td>{{ enforcer['startDate'] }}</td>
-                    <td>{{ enforcer['rankID'] }}</td>
+                    <td>{{ enforcer['rankName'] }}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -34,8 +34,13 @@
                 <div class="col-5">
                     <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="text" name="firstName" placeholder="First Name" required=True />
                     <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="text" name="lastName" placeholder="Last Name" />
-                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="date" name="startDate" required=True /> 
-                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="number" name="rankID" placeholder="Rank ID" required=True />
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="date" name="startDate" required=True />
+                    <select class="form-select mx-3 mb-3 bg-secondary-subtle " id="rankID" name="rankID">
+                        {% for rank in ranks %}
+                            <option value={{ rank["rankID"] }}>{{ rank["rankName"] }}</option>
+                        {% endfor %}
+                        <option value=None>None</option>
+                    </select> 
                     <button class="btn btn-warning col-5 mx-3" type="submit">Add</button>
                 </div>
             </div>

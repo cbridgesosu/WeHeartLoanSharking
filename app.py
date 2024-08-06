@@ -213,13 +213,43 @@ def root():
 # Routes for Enforcers page
 @app.route('/add_enforcer', methods=["POST", "GET"])
 def add_enforcer():
+    # Query to populate the display table
+    query_Enforcers = 'SELECT enforcerID, firstName, lastName, startDate, rankName FROM Enforcers LEFT JOIN Ranks ON Enforcers.rankID=Ranks.rankID ORDER BY enforcerID;'
+    # Query to polulate the select client dropdown  
+    query_Ranks = 'SELECT rankID, rankName FROM Ranks;'
+
+    # Execute all queries and store json
+    cur = mysql.connection.cursor()
+    cur.execute(query_Enforcers)
+    enforcers = cur.fetchall()
+    cur.execute(query_Ranks)
+    ranks = cur.fetchall()
+    # print(enforcers, ranks)
+
+    # Handles add new enforcer form request
     if request.method == "POST":
+        firstName = request.form.get('firstName')
+        lastName = request.form.get('lastName')
+        startDate = request.form.get('startDate')
+        rankID = request.form.get('rankID')
+        print(rankID)
+        if rankID == "None":
+             rankID = None
+        print(rankID)
+        print(type(rankID))
+        # Insert query for add new enforcer
+        
+        query_Add_Enforcer = f"INSERT INTO Enforcers (firstName, lastName, startDate, rankID) VALUES (%s, %s, %s, %s);"
+        try:
+            print(cur.execute(query_Add_Enforcer, (firstName, lastName, startDate, rankID,)))
+            mysql.connection.commit()
             print("Enforcer added.")
-            enforcers.append({"firstName": request.form.get("firstName"), 
-                              "lastName": request.form.get("lastName"), 
-                              "startDate": request.form.get("startDate"),
-                              "rankID": request.form.get("rankID")})
-    return render_template("add_enforcer.j2", enforcers=enforcers)
+        except mysql.connection.IntegrityError as err:
+                print("Error: {}".format(err))
+        return redirect('add_enforcer')
+
+
+    return render_template("add_enforcer.j2", enforcers=enforcers, ranks=ranks)
 
 
 # Routes for Clients page
