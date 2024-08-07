@@ -7,30 +7,30 @@ load_dotenv()
 
 PORT = os.getenv('PORT')
 
-# temporary data until DB implemented
-enforcers = [
-    {
-        "enforcerID": 1,
-        "firstName": "Sergei",
-        "lastName": None,
-        "startDate": "1990-01-01",
-        "rankID": 1
-    },
-    {
-        "enforcerID": 2,
-        "firstName": "Elena",
-        "lastName": "Stark",
-        "startDate": "2015-08-22",
-        "rankID": 2
-    },
-    {
-        "enforcerID": 3,
-        "firstName": "Georg",
-        "lastName": "Rulin",
-        "startDate": "2007-02-27",
-        "rankID": "NULL"
-    }
-]
+# # temporary data until DB implemented
+# enforcers = [
+#     {
+#         "enforcerID": 1,
+#         "firstName": "Sergei",
+#         "lastName": None,
+#         "startDate": "1990-01-01",
+#         "rankID": 1
+#     },
+#     {
+#         "enforcerID": 2,
+#         "firstName": "Elena",
+#         "lastName": "Stark",
+#         "startDate": "2015-08-22",
+#         "rankID": 2
+#     },
+#     {
+#         "enforcerID": 3,
+#         "firstName": "Georg",
+#         "lastName": "Rulin",
+#         "startDate": "2007-02-27",
+#         "rankID": "NULL"
+#     }
+# ]
 
 # clients = [
 #     {
@@ -76,40 +76,40 @@ enforcers = [
 #     },
 # ]
 
-locations = [
-     {
-          'businessID': 1,
-          'ownerID': 1,
-          'streetAddress': '1234 Main St',
-          'cityName': 'Chicago',
-          'stateName': 'Illinois',
-          'zipCode': 60603
-     },
-     {
-          'businessID': 2,
-          'ownerID': 1,
-          'streetAddress': '5678 Westeros Pl',
-          'cityName': 'Paris',
-          'stateName': 'Texas',
-          'zipCode': 75462
-     },
-     {
-          'businessID': 3,
-          'ownerID': 2,
-          'streetAddress': '23rd W. Broadway',
-          'cityName': 'New York',
-          'stateName': 'New York',
-          'zipCode': 10016
-     },
-     {
-          'businessID': 4,
-          'ownerID': 3,
-          'streetAddress': '327 Beagle St',
-          'cityName': 'San Diego',
-          'stateName': 'California',
-          'zipCode': 92038
-     }
-]
+# locations = [
+#      {
+#           'businessID': 1,
+#           'ownerID': 1,
+#           'streetAddress': '1234 Main St',
+#           'cityName': 'Chicago',
+#           'stateName': 'Illinois',
+#           'zipCode': 60603
+#      },
+#      {
+#           'businessID': 2,
+#           'ownerID': 1,
+#           'streetAddress': '5678 Westeros Pl',
+#           'cityName': 'Paris',
+#           'stateName': 'Texas',
+#           'zipCode': 75462
+#      },
+#      {
+#           'businessID': 3,
+#           'ownerID': 2,
+#           'streetAddress': '23rd W. Broadway',
+#           'cityName': 'New York',
+#           'stateName': 'New York',
+#           'zipCode': 10016
+#      },
+#      {
+#           'businessID': 4,
+#           'ownerID': 3,
+#           'streetAddress': '327 Beagle St',
+#           'cityName': 'San Diego',
+#           'stateName': 'California',
+#           'zipCode': 92038
+#      }
+# ]
 
 loans = [
      {
@@ -393,13 +393,32 @@ def edit_assignment(id):
 # Routes for Locations page
 @app.route('/add_location', methods=["POST", "GET"])
 def add_location():
-    query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     cur = mysql.connection.cursor()
+    query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     cur.execute(query_Clients)
     clients = cur.fetchall()
-    if request.method == "POST":
-            print("Location added.")
 
+    query_Business_Locations = 'SELECT * FROM BusinessLocations;'
+    cur.execute(query_Business_Locations)
+    locations = cur.fetchall()
+
+    if request.method == "POST":
+            clientID = request.form.get('assign_owner')
+            streetAddress = request.form.get('streetAddress')
+            stateName = request.form.get('stateName')
+            cityName = request.form.get('cityName')
+            zipCode = request.form.get('zipCode')
+
+            # Insert query for add new enforcers_has_client 
+            query_Add_Location = "INSERT INTO BusinessLocations (ownerID, streetAddress, cityName, stateName, zipCode) VALUES (%s, %s, %s, %s, %s);"
+            try:
+                cur.execute(query_Add_Location, (clientID, streetAddress, stateName, cityName, zipCode))
+                mysql.connection.commit()
+                print("Client assigned.")
+            except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
+            return redirect('/add_location')
+    
     return render_template("add_location.j2", locations=locations, clients=clients)
 
 # Routes for Loans page
@@ -417,6 +436,14 @@ def add_loan():
 # Routes for Collections page
 @app.route('/add_collection', methods=["POST", "GET"])
 def add_collection():
+    cur = mysql.connection.cursor()
+    query_Business_Locations = 'SELECT * FROM BusinessLocations;'
+    cur.execute(query_Business_Locations)
+    locations = cur.fetchall()
+    query_Enforcers = 'SELECT * FROM Enforcers;'
+    cur.execute(query_Enforcers)
+    enforcers = cur.fetchall()
+
     if request.method == "POST":
             print("Collection added.")
 

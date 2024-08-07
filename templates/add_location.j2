@@ -39,7 +39,7 @@
                     <label for="assign_owner">Select Owner:</label>
                     <select class="form-select bg-secondary-subtle mx-3 mb-3" id="assign_owner" name="assign_owner" required=True >
                         {% for client in clients %}
-                            <option value={{ client["firstName"] }}>{{ client["firstName"] }}</option>
+                            <option value={{ client["clientID"] }} label={{ client["firstName"] }}>{{ client["firstName"] }}</option>
                         {% endfor %}
                     </select>
                 </div>
