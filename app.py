@@ -32,26 +32,26 @@ enforcers = [
     }
 ]
 
-clients = [
-    {
-         "clientID": 1,
-        "firstName": "Jon",
-        "lastName": "Snow",
-        "inGoodStanding": True
-    },
-    {
-        "clientID": 2,
-        "firstName": "Cersei",
-        "lastName": "Lannister",
-        "inGoodStanding": False
-    },
-    {
-        "clientID": 3,
-        "firstName": "Ned",
-        "lastName": "Stark",
-        "inGoodStanding": False
-    }
-]
+# clients = [
+#     {
+#          "clientID": 1,
+#         "firstName": "Jon",
+#         "lastName": "Snow",
+#         "inGoodStanding": True
+#     },
+#     {
+#         "clientID": 2,
+#         "firstName": "Cersei",
+#         "lastName": "Lannister",
+#         "inGoodStanding": False
+#     },
+#     {
+#         "clientID": 3,
+#         "firstName": "Ned",
+#         "lastName": "Stark",
+#         "inGoodStanding": False
+#     }
+# ]
 
 # enforcer_has_clients = [
 #     {
@@ -255,25 +255,60 @@ def add_enforcer():
 # Routes for Clients page
 @app.route('/add_client', methods=["POST", "GET"])
 def add_client():
-    if request.method == "POST":
-            print("Client added.")
-            clients.append({"firstName": request.form.get("firstName"), 
-                              "lastName": request.form.get("lastName"), 
-                              "inGoodStanding": True,
-                              "loansRemaining": 0})
-    return render_template("add_client.j2", clients=clients)
+    cur = mysql.connection.cursor()
 
-@app.route('/update_client', methods=["POST", "GET"])
-def update_client():
-    if request.method == "POST":
-            print("Client updated.")
-    return render_template("update_client.j2", clients=clients)
+    if request.method == "GET":
+            # Query to polulate the Client table
+            query_Clients = 'SELECT * FROM Clients;'
+            cur.execute(query_Clients)
+            clients = cur.fetchall()
+            return render_template("add_client.j2", clients=clients)
 
-@app.route('/delete_client', methods=["POST", "GET"])
-def delete_client():
     if request.method == "POST":
-            print("Client deleted.")
-    return render_template("delete_client.j2", clients=clients)
+            # Query inputs from form, then add row to database
+            firstName = request.form.get('firstName')
+            lastName = request.form.get('lastName')
+            inGoodStanding = 1 if request.form.get('inGoodStanding') in ['True', 'true'] else 0
+            query_Add_Client = "INSERT INTO Clients (firstName, lastName, inGoodStanding) VALUES (%s, %s, %s);"
+            try:
+                cur.execute(query_Add_Client, (firstName, lastName, inGoodStanding))
+                mysql.connection.commit()
+            except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
+            return redirect('add_client')
+    
+    
+
+@app.route('/update_client/<int:clientID>', methods=["POST", "GET"])
+def update_client(clientID):
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        query_Client_selected = 'SELECT * FROM Clients WHERE clientID = %s;' % (clientID)
+        cur.execute(query_Client_selected)
+        client = cur.fetchall()
+        # Render the page if the request is a GET
+        return render_template("update_client.j2", client=client)
+    elif request.method == "POST":
+        firstName = request.form.get('firstName')
+        lastName = request.form.get('lastName')
+        inGoodStanding = 1 if request.form.get('inGoodStanding') in ['True', 'true'] else 0    
+        query_Update_Client = "UPDATE Clients SET Clients.firstName = %s, Clients.lastName = %s, Clients.inGoodStanding = %s WHERE Clients.clientID = %s;"
+        try:
+            cur.execute(query_Update_Client, (firstName, lastName, inGoodStanding, clientID))
+            mysql.connection.commit()
+        except:
+            print("Error: ")
+        return redirect('../add_client')
+
+
+@app.route('/delete_client/<int:clientID>', methods=["POST", "GET"])
+def delete_client(clientID):
+    # Query to delete Client entry with selected ID
+    query_Delete_Client = "DELETE FROM Clients WHERE clientID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Client, (clientID,))
+    mysql.connection.commit()
+    return redirect('../add_client')
 
 
 # Routes for enforcers_has_clients page
@@ -358,6 +393,10 @@ def edit_assignment(id):
 # Routes for Locations page
 @app.route('/add_location', methods=["POST", "GET"])
 def add_location():
+    query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    cur = mysql.connection.cursor()
+    cur.execute(query_Clients)
+    clients = cur.fetchall()
     if request.method == "POST":
             print("Location added.")
 
@@ -366,6 +405,10 @@ def add_location():
 # Routes for Loans page
 @app.route('/add_loan', methods=["POST", "GET"])
 def add_loan():
+    query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    cur = mysql.connection.cursor()
+    cur.execute(query_Clients)
+    clients = cur.fetchall()
     if request.method == "POST":
             print("Loan added.")
 
