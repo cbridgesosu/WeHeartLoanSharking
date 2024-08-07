@@ -268,7 +268,7 @@ def add_client():
             # Query inputs from form, then add row to database
             firstName = request.form.get('firstName')
             lastName = request.form.get('lastName')
-            inGoodStanding = 1 if request.form.get('inGoodStanding') in ['True', 'true'] else 0
+            inGoodStanding = request.form.get('inGoodStanding')
             query_Add_Client = "INSERT INTO Clients (firstName, lastName, inGoodStanding) VALUES (%s, %s, %s);"
             try:
                 cur.execute(query_Add_Client, (firstName, lastName, inGoodStanding))
@@ -291,7 +291,7 @@ def update_client(clientID):
     elif request.method == "POST":
         firstName = request.form.get('firstName')
         lastName = request.form.get('lastName')
-        inGoodStanding = 1 if request.form.get('inGoodStanding') in ['True', 'true'] else 0    
+        inGoodStanding = request.form.get('inGoodStanding')
         query_Update_Client = "UPDATE Clients SET Clients.firstName = %s, Clients.lastName = %s, Clients.inGoodStanding = %s WHERE Clients.clientID = %s;"
         try:
             cur.execute(query_Update_Client, (firstName, lastName, inGoodStanding, clientID))
