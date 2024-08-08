@@ -35,9 +35,9 @@
             <div class="row">
                 <div class="col-4">
                     <label for="select_enforcer">Select Enforcer:</label>
-                    <select class="form-select bg-secondary-subtle" id="select_enforecer" name="select_enforcer">
+                    <select class="form-select bg-secondary-subtle" id="select_enforcer" name="select_enforcer">
                         {% for enforcer in enforcers %}
-                            <option value={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+                            <option value={{ enforcer["enforcerID"] }} label={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -47,7 +47,7 @@
                     <label for="select_loan">Select Loan:</label>
                     <select class="form-select bg-secondary-subtle" id="select_loan" name="select_loan">
                         {% for loan in loans %}
-                            <option value={{ loan["loanID"] }}>{{ loan["loanID"] }}</option>
+                            <option value={{ loan["loanID"] }} label={{ loan["loanID"] }}>{{ loan["loanID"] }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -57,9 +57,13 @@
                     <label for="select_location">Collection Location:</label>
                     <select class="form-select bg-secondary-subtle" id="select_location" name="select_location">
                         {% for location in locations %}
-                            <option value={{ location["businessID"] }}>{{ location["businessID"] }}</option>
+                            <option value={{ location["businessID"] }} label={{ location["businessID"] }}>{{ location["businessID"] }}</option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="col-4">
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="number" name="amount_collected" placeholder="Amount Collected" required=True />
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="date" name="date_of_collection" required=True />
                 </div>
             </div>
             <button class="btn btn-warning col-2 mx-3 mt-3" type="submit">Add</button>

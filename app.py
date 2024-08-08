@@ -111,71 +111,71 @@ PORT = os.getenv('PORT')
 #      }
 # ]
 
-loans = [
-     {
-          "loanID": 1,
-          "clientID": 1,
-          "originationAmount": 50000,
-          "principalRemaining": 50000,
-          "originationDate": "2024-07-04",
-          "interestRate": 33,
-          "paymentDue": 15
-     },
-     {
-          "loanID": 2,
-          "clientID": 1,
-          "originationAmount": 50000,
-          "principalRemaining": 50000,
-          "originationDate": "2024-07-05",
-          "interestRate": 33,
-          "paymentDue": 15
-     },  
-     {
-          "loanID": 3,
-          "clientID": 2,
-          "originationAmount": 200000,
-          "principalRemaining": 150000,
-          "originationDate": "2022-01-01",
-          "interestRate": 45,
-          "paymentDue": 10
-     },
-     {
-          "loanID": 4,
-          "clientID": 3,
-          "originationAmount": 100000,
-          "principalRemaining": 55000,
-          "originationDate": "2023-12-25",
-          "interestRate": 23,
-          "paymentDue": 10
-     },
-]
+# loans = [
+#      {
+#           "loanID": 1,
+#           "clientID": 1,
+#           "originationAmount": 50000,
+#           "principalRemaining": 50000,
+#           "originationDate": "2024-07-04",
+#           "interestRate": 33,
+#           "paymentDue": 15
+#      },
+#      {
+#           "loanID": 2,
+#           "clientID": 1,
+#           "originationAmount": 50000,
+#           "principalRemaining": 50000,
+#           "originationDate": "2024-07-05",
+#           "interestRate": 33,
+#           "paymentDue": 15
+#      },  
+#      {
+#           "loanID": 3,
+#           "clientID": 2,
+#           "originationAmount": 200000,
+#           "principalRemaining": 150000,
+#           "originationDate": "2022-01-01",
+#           "interestRate": 45,
+#           "paymentDue": 10
+#      },
+#      {
+#           "loanID": 4,
+#           "clientID": 3,
+#           "originationAmount": 100000,
+#           "principalRemaining": 55000,
+#           "originationDate": "2023-12-25",
+#           "interestRate": 23,
+#           "paymentDue": 10
+#      },
+# ]
 
-collections = [
-      {
-            "collectionID": 1,
-            "enforcerID": 1,
-            "loanID": 1,
-            "businessID": 2,
-            "amountCollected": 1000,
-            "dateOfCollection": "2024-07-01"
-      },
-      {
-            "collectionID": 2,
-            "enforcerID": 2,
-            "loanID": 2,
-            "businessID": 1,
-            "amountCollected": 5000,
-            "dateOfCollection": "2024-07-10"
-      },
-      {
-            "collectionID": 3,
-            "enforcerID": 3,
-            "loanID": 3,
-            "businessID": 3,
-            "amountCollected": 1500,
-            "dateOfCollection": "2024-07-07"
-      },
-]
+# collections = [
+#       {
+#             "collectionID": 1,
+#             "enforcerID": 1,
+#             "loanID": 1,
+#             "businessID": 2,
+#             "amountCollected": 1000,
+#             "dateOfCollection": "2024-07-01"
+#       },
+#       {
+#             "collectionID": 2,
+#             "enforcerID": 2,
+#             "loanID": 2,
+#             "businessID": 1,
+#             "amountCollected": 5000,
+#             "dateOfCollection": "2024-07-10"
+#       },
+#       {
+#             "collectionID": 3,
+#             "enforcerID": 3,
+#             "loanID": 3,
+#             "businessID": 3,
+#             "amountCollected": 1500,
+#             "dateOfCollection": "2024-07-07"
+#       },
+# ]
 
 ranks = [
       {
@@ -469,9 +469,26 @@ def add_collection():
     query_Enforcers = 'SELECT * FROM Enforcers;'
     cur.execute(query_Enforcers)
     enforcers = cur.fetchall()
+    query_Loans = 'SELECT * FROM Loans;'
+    cur.execute(query_Loans)
+    loans = cur.fetchall()
+    query_Collections = 'SELECT * FROM Collections;'
+    cur.execute(query_Collections)
+    collections = cur.fetchall()
 
     if request.method == "POST":
-            print("Collection added.")
+            enforcerID = request.form.get('select_enforcer')
+            loanID = request.form.get('select_loan')
+            businessID = request.form.get('select_location')
+            amountCollected = request.form.get('amount_collected')
+            query_Add_Collection = "INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection) VALUES (%s, %s, %s, %s, '2024-01-01');"
+            try:
+                cur.execute(query_Add_Collection, (enforcerID, loanID, businessID, amountCollected))
+                mysql.connection.commit()
+                print("Loan added.")
+            except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
+            return redirect('/add_collection')
 
     return render_template("add_collection.j2", collections=collections, loans=loans, enforcers=enforcers, locations=locations)
 
