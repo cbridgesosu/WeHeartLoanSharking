@@ -22,7 +22,7 @@
                     <td>{{ loan['loanID'] }}</td>
                     <td>{{ loan["firstName"] }} {% if loan["lastName"] != None %} {{ loan["lastName"] }} {% endif %}</td>
                     <td>{{ loan['originationAmount'] }}</td>
-                    <td>{{ loan['principalRemaining'] }}</td>
+                    <td>{% if loan['principalRemaining'] != None %} {{ loan['principalRemaining'] }} {% else %} {{ loan['originationAmount'] }} {% endif %}</td>
                     <td>{{ loan['originationDate'] }}</td>
                     <td>{{ loan['interestRate'] }}</td>
                     <td>{{ loan['paymentDue'] }}</td>
