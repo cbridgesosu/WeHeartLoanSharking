@@ -9,7 +9,7 @@
             <thead class="table-success">
             <tr>
                 <th>Loan ID</th>
-                <th>Client ID</th>
+                <th>Client</th>
                 <th>Origination Amount</th>
                 <th>Principal Remaining</th>
                 <th>Origination Date</th>
@@ -20,7 +20,7 @@
             {% for loan in loans %}
                 <tr>
                     <td>{{ loan['loanID'] }}</td>
-                    <td>{{ loan['clientID'] }}</td>
+                    <td>{{ loan["firstName"] }} {% if loan["lastName"] != None %} {{ loan["lastName"] }} {% endif %}</td>
                     <td>{{ loan['originationAmount'] }}</td>
                     <td>{{ loan['principalRemaining'] }}</td>
                     <td>{{ loan['originationDate'] }}</td>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-5">
                     <label for="interestRate">Interest Rate:</label>
-                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="number" name="interestRate" placeholder="Interest Rate (%)" min="0" max="100" required=True />
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="number" step="0.01" name="interestRate" placeholder="Interest Rate (%)" min="0" max="100" required=True />
                 </div>
             </div>
             <div class="row">
@@ -53,7 +53,7 @@
                     <label for="assign_loan">Select Client:</label>
                     <select class="form-select bg-secondary-subtle mx-3 mb-3" id="assign_loan" name="assign_loan" required=True >
                         {% for client in clients %}
-                            <option value={{ client["firstName"] }}>{{ client["firstName"] }}</option>
+                            <option value={{ client["clientID"] }}>{{ client["firstName"] }} {% if client["lastName"] != None %} {{ client["lastName"] }} {% endif %}</option>
                         {% endfor %}
                     </select>
                 </div>

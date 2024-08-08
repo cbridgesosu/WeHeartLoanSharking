@@ -424,12 +424,34 @@ def add_location():
 # Routes for Loans page
 @app.route('/add_loan', methods=["POST", "GET"])
 def add_loan():
+    # Query to populate loan display table
+    query_Loans = 'SELECT * FROM Loans INNER JOIN Clients ON Loans.clientID=Clients.clientID ORDER BY loanID;'
+    # Query to populate client select dropdown
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
+    
+    # Executes all queries and stores json
     cur = mysql.connection.cursor()
+    cur.execute(query_Loans)
+    loans = cur.fetchall()
     cur.execute(query_Clients)
     clients = cur.fetchall()
+    
+    #Handles add new loan form request
     if request.method == "POST":
-            print("Loan added.")
+            originationAmount = request.form.get('originationAmount')
+            interestRate = request.form.get('interestRate')
+            dueDate = request.form.get('paymentDue')
+            clientID = request.form.get('assign_loan')
+
+            # Insert query for add new loan
+            query_Add_Location = "INSERT INTO Loans (clientID, originationAmount, principalRemaining, originationDate, interestRate, paymentDue) VALUES (%s, %s, %s, NOW(), %s, %s);"
+            try:
+                cur.execute(query_Add_Location, (clientID, originationAmount, originationAmount, interestRate, dueDate))
+                mysql.connection.commit()
+                print("Loan added.")
+            except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
+            return redirect('/add_loan')
 
     return render_template("add_loan.j2", loans=loans, clients=clients)
 
