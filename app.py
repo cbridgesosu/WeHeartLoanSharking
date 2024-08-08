@@ -428,7 +428,7 @@ def add_loan():
     query_Loans = '(SELECT loanID, firstName, lastName, originationAmount, originationDate, interestRate, paymentDue FROM Loans INNER JOIN Clients ON Loans.clientID=Clients.clientID ORDER BY loanID) AS Loans'
     query_amountCollected = '(SELECT loanID, SUM(amountCollected) AS amountPaid FROM Collections GROUP BY loanID) AS collectionSum'
     query_amountPaid = f'(SELECT Loans.loanID, Loans.originationAmount - collectionSum.amountPaid AS principalRemaining FROM {query_amountCollected} INNER JOIN Loans ON Loans.loanID=collectionSum.loanID) AS amountPaid'
-    query_combineLoansPaid = f'SELECT Loans.loanID, interestRate, originationAmount, originationDate, firstName, lastName, paymentDue, principalRemaining FROM {query_Loans} INNER JOIN {query_amountPaid} ON Loans.loanID=amountPaid.loanID;'
+    query_combineLoansPaid = f'SELECT Loans.loanID, interestRate, originationAmount, originationDate, firstName, lastName, paymentDue, principalRemaining FROM {query_Loans} LEFT JOIN {query_amountPaid} ON Loans.loanID=amountPaid.loanID;'
     # Query to populate client select dropdown
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     
