@@ -50,10 +50,6 @@
                             <option value={{ loan["loanID"] }} label={{ loan["loanID"] }}>{{ loan["loanID"] }}</option>
                         {% endfor %}
                     </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
                     <label for="select_location">Collection Location:</label>
                     <select class="form-select bg-secondary-subtle" id="select_location" name="select_location">
                         {% for location in locations %}
@@ -61,9 +57,13 @@
                         {% endfor %}
                     </select>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-4">
-                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="number" name="amount_collected" placeholder="Amount Collected" required=True />
-                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="date" name="date_of_collection" required=True />
+                    <label for="amount_collected">Amount Collected</label>
+                    <input class="form-control bg-secondary-subtle" type="number" name="amount_collected" placeholder="Amount Collected" required=True />
+                    <label for="date_of_collection">Date of Collection</label>
+                    <input class="form-control bg-secondary-subtle" type="date" name="date_of_collection" required=True />
                 </div>
             </div>
             <button class="btn btn-warning col-2 mx-3 mt-3" type="submit">Add</button>
