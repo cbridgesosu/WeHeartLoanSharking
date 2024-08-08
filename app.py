@@ -425,17 +425,21 @@ def add_location():
 @app.route('/add_loan', methods=["POST", "GET"])
 def add_loan():
     # Query to populate loan display table
-    query_Loans = 'SELECT * FROM Loans INNER JOIN Clients ON Loans.clientID=Clients.clientID ORDER BY loanID;'
+    query_Loans = '(SELECT loanID, firstName, lastName, originationAmount, originationDate, interestRate, paymentDue FROM Loans INNER JOIN Clients ON Loans.clientID=Clients.clientID ORDER BY loanID) AS Loans'
+    query_amountCollected = '(SELECT loanID, SUM(amountCollected) AS amountPaid FROM Collections GROUP BY loanID) AS collectionSum'
+    query_amountPaid = f'(SELECT Loans.loanID, Loans.originationAmount - collectionSum.amountPaid AS principalRemaining FROM {query_amountCollected} INNER JOIN Loans ON Loans.loanID=collectionSum.loanID) AS test'
+    query_combineLoansPaid = f'SELECT Loans.loanID, interestRate, originationAmount, originationDate, firstName, lastName, paymentDue, principalRemaining FROM {query_Loans} INNER JOIN {query_amountPaid} ON Loans.loanID=test.loanID;'
     # Query to populate client select dropdown
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     
+    
     # Executes all queries and stores json
     cur = mysql.connection.cursor()
-    cur.execute(query_Loans)
+    cur.execute(query_combineLoansPaid)
     loans = cur.fetchall()
     cur.execute(query_Clients)
     clients = cur.fetchall()
-    
+
     #Handles add new loan form request
     if request.method == "POST":
             originationAmount = request.form.get('originationAmount')
@@ -453,7 +457,7 @@ def add_loan():
                   print("Error: {}".format(err))
             return redirect('/add_loan')
 
-    return render_template("add_loan.j2", loans=loans, clients=clients)
+    return render_template("add_loan.j2", loans=loans,  clients=clients)
 
 # Routes for Collections page
 @app.route('/add_collection', methods=["POST", "GET"])
