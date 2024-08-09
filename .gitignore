@@ -3,3 +3,4 @@ venv/
 __pycache__/
 .nfs*
 .env
+restart_server.bash

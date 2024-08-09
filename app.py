@@ -7,191 +7,6 @@ load_dotenv()
 
 PORT = os.getenv('PORT')
 
-# # temporary data until DB implemented
-# enforcers = [
-#     {
-#         "enforcerID": 1,
-#         "firstName": "Sergei",
-#         "lastName": None,
-#         "startDate": "1990-01-01",
-#         "rankID": 1
-#     },
-#     {
-#         "enforcerID": 2,
-#         "firstName": "Elena",
-#         "lastName": "Stark",
-#         "startDate": "2015-08-22",
-#         "rankID": 2
-#     },
-#     {
-#         "enforcerID": 3,
-#         "firstName": "Georg",
-#         "lastName": "Rulin",
-#         "startDate": "2007-02-27",
-#         "rankID": "NULL"
-#     }
-# ]
-
-# clients = [
-#     {
-#          "clientID": 1,
-#         "firstName": "Jon",
-#         "lastName": "Snow",
-#         "inGoodStanding": True
-#     },
-#     {
-#         "clientID": 2,
-#         "firstName": "Cersei",
-#         "lastName": "Lannister",
-#         "inGoodStanding": False
-#     },
-#     {
-#         "clientID": 3,
-#         "firstName": "Ned",
-#         "lastName": "Stark",
-#         "inGoodStanding": False
-#     }
-# ]
-
-# enforcer_has_clients = [
-#     {
-#         'enforcerClientID': 1,
-#         'enforcerID': 1,
-#         'clientID': 3
-#     },
-#     {
-#         'enforcerClientID': 2,
-#         'enforcerID': 2,
-#         'clientID': 1
-#     },
-#     {
-#         'enforcerClientID': 3,
-#         'enforcerID': 3,
-#         'clientID': 3
-#     },
-#     {
-#         'enforcerClientID': 4,
-#         'enforcerID': 2,
-#         'clientID': 3
-#     },
-# ]
-
-# locations = [
-#      {
-#           'businessID': 1,
-#           'ownerID': 1,
-#           'streetAddress': '1234 Main St',
-#           'cityName': 'Chicago',
-#           'stateName': 'Illinois',
-#           'zipCode': 60603
-#      },
-#      {
-#           'businessID': 2,
-#           'ownerID': 1,
-#           'streetAddress': '5678 Westeros Pl',
-#           'cityName': 'Paris',
-#           'stateName': 'Texas',
-#           'zipCode': 75462
-#      },
-#      {
-#           'businessID': 3,
-#           'ownerID': 2,
-#           'streetAddress': '23rd W. Broadway',
-#           'cityName': 'New York',
-#           'stateName': 'New York',
-#           'zipCode': 10016
-#      },
-#      {
-#           'businessID': 4,
-#           'ownerID': 3,
-#           'streetAddress': '327 Beagle St',
-#           'cityName': 'San Diego',
-#           'stateName': 'California',
-#           'zipCode': 92038
-#      }
-# ]
-
-# loans = [
-#      {
-#           "loanID": 1,
-#           "clientID": 1,
-#           "originationAmount": 50000,
-#           "principalRemaining": 50000,
-#           "originationDate": "2024-07-04",
-#           "interestRate": 33,
-#           "paymentDue": 15
-#      },
-#      {
-#           "loanID": 2,
-#           "clientID": 1,
-#           "originationAmount": 50000,
-#           "principalRemaining": 50000,
-#           "originationDate": "2024-07-05",
-#           "interestRate": 33,
-#           "paymentDue": 15
-#      },  
-#      {
-#           "loanID": 3,
-#           "clientID": 2,
-#           "originationAmount": 200000,
-#           "principalRemaining": 150000,
-#           "originationDate": "2022-01-01",
-#           "interestRate": 45,
-#           "paymentDue": 10
-#      },
-#      {
-#           "loanID": 4,
-#           "clientID": 3,
-#           "originationAmount": 100000,
-#           "principalRemaining": 55000,
-#           "originationDate": "2023-12-25",
-#           "interestRate": 23,
-#           "paymentDue": 10
-#      },
-# ]
-
-# collections = [
-#       {
-#             "collectionID": 1,
-#             "enforcerID": 1,
-#             "loanID": 1,
-#             "businessID": 2,
-#             "amountCollected": 1000,
-#             "dateOfCollection": "2024-07-01"
-#       },
-#       {
-#             "collectionID": 2,
-#             "enforcerID": 2,
-#             "loanID": 2,
-#             "businessID": 1,
-#             "amountCollected": 5000,
-#             "dateOfCollection": "2024-07-10"
-#       },
-#       {
-#             "collectionID": 3,
-#             "enforcerID": 3,
-#             "loanID": 3,
-#             "businessID": 3,
-#             "amountCollected": 1500,
-#             "dateOfCollection": "2024-07-07"
-#       },
-# ]
-
-ranks = [
-      {
-            "rankID": 1,
-            "rankName": "Underboss"
-      },
-      {
-            "rankID": 2,
-            "rankName": "Captain"
-      },
-      {
-            "rankID": 3,
-            "rankName": "Soldier"
-      }
-]
-
 # Configuration
 app = Flask(__name__)
 
@@ -495,11 +310,19 @@ def add_collection():
 # Routes for Ranks page
 @app.route('/add_rank', methods=["POST", "GET"])
 def add_rank():
+    cur = mysql.connection.cursor()
+    query_Ranks = 'SELECT * FROM Ranks ORDER BY rankID;'
+    cur.execute(query_Ranks)
+    ranks = cur.fetchall()
     if request.method == "POST":
-            print("Rank added.")
-            id = len(ranks) + 1
-            ranks.append({"rankName": request.form.get("rankName"),
-                          "rankID": len(ranks) +1})
+            rankName = request.form.get('rankName')
+            query_Add_Rank = "INSERT INTO Ranks (rankName) VALUES (%s);"
+            try:
+                 cur.execute(query_Add_Rank, (rankName,))
+                 mysql.connection.commit()
+            except mysql.connection.IntegrityError as err:
+                  print("Error: {}".format(err))
+            return redirect('/add_rank')
     return render_template("add_rank.j2", ranks=ranks)
 
 
