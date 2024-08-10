@@ -212,7 +212,7 @@ def add_location():
     cur.execute(query_Clients)
     clients = cur.fetchall()
 
-    query_Business_Locations = 'SELECT * FROM BusinessLocations;'
+    query_Business_Locations = 'SELECT streetAddress, cityName, stateName, zipCode, Clients.firstName, Clients.lastName FROM BusinessLocations JOIN Clients ON BusinessLocations.ownerID = Clients.clientID;'
     cur.execute(query_Business_Locations)
     locations = cur.fetchall()
 
