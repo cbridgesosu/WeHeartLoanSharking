@@ -286,7 +286,7 @@ def add_collection():
     query_Loans = 'SELECT * FROM Loans;'
     cur.execute(query_Loans)
     loans = cur.fetchall()
-    query_Collections = 'SELECT * FROM Collections INNER JOIN BusinessLocations ON Collections.businessID=BusinessLocations.businessID;'
+    query_Collections = 'SELECT * FROM Collections;'
     cur.execute(query_Collections)
     collections = cur.fetchall()
 
@@ -333,7 +333,6 @@ def delete_rank(rankID):
     mysql.connection.commit()
 
     return redirect('../add_rank')
-
 
 # Listener
 
