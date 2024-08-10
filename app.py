@@ -325,6 +325,15 @@ def add_rank():
             return redirect('/add_rank')
     return render_template("add_rank.j2", ranks=ranks)
 
+@app.route('/delete_rank/<int:rankID>')
+def delete_rank(rankID):
+    # Query to delete rank entry with selected ID
+    query_Delete_Rank = "DELETE FROM Ranks WHERE rankID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Rank, (rankID,))
+    mysql.connection.commit()
+
+    return redirect('../add_rank')
 
 # Listener
 
