@@ -334,7 +334,6 @@ def delete_rank(rankID):
 
     return redirect('../add_rank')
 
-
 # Listener
 
 if __name__ == "__main__":
