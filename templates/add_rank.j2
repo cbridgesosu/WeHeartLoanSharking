@@ -8,14 +8,12 @@
         <table class="table table-striped table-bordered">
             <thead class="table-success">
                 <tr>
-                    <th>Rank ID</th>
                     <th>Rank Name</th>
                 </tr>
             </thead>
             <tbody>
                 {% for rank in ranks %}
                     <tr>
-                        <td>{{ rank['rankID'] }}</td>
                         <td>{{ rank['rankName'] }}</td>
                     </tr>
                 {% endfor %}
