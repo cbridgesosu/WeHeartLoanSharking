@@ -39,7 +39,6 @@ def add_enforcer():
     enforcers = cur.fetchall()
     cur.execute(query_Ranks)
     ranks = cur.fetchall()
-    # print(enforcers, ranks)
 
     # Handles add new enforcer form request
     if request.method == "POST":
@@ -334,6 +333,7 @@ def delete_rank(rankID):
     mysql.connection.commit()
 
     return redirect('../add_rank')
+
 
 # Listener
 
