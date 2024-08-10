@@ -65,6 +65,14 @@ def add_enforcer():
 
     return render_template("add_enforcer.j2", enforcers=enforcers, ranks=ranks)
 
+@app.route('/delete_enforcer/<int:enforcerID>')
+def delete_enforcer(enforcerID):
+    # Query to delete enforcer entry with selected ID
+    query_Delete_Enforcer = "DELETE FROM Enforcers WHERE enforcerID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Enforcer, (enforcerID,))
+    mysql.connection.commit()
+    return redirect('/add_enforcer')
 
 # Routes for Clients page
 @app.route('/add_client', methods=["POST", "GET"])
@@ -212,7 +220,7 @@ def add_location():
     cur.execute(query_Clients)
     clients = cur.fetchall()
 
-    query_Business_Locations = 'SELECT streetAddress, cityName, stateName, zipCode, Clients.firstName, Clients.lastName FROM BusinessLocations JOIN Clients ON BusinessLocations.ownerID = Clients.clientID;'
+    query_Business_Locations = 'SELECT businessID, streetAddress, cityName, stateName, zipCode, Clients.firstName, Clients.lastName FROM BusinessLocations JOIN Clients ON BusinessLocations.ownerID = Clients.clientID;'
     cur.execute(query_Business_Locations)
     locations = cur.fetchall()
 
@@ -234,6 +242,15 @@ def add_location():
             return redirect('/add_location')
     
     return render_template("add_location.j2", locations=locations, clients=clients)
+
+@app.route('/delete_location/<int:businessID>')
+def delete_location(businessID):
+    # Query to delete enforcer entry with selected ID
+    query_Delete_Location = "DELETE FROM BusinessLocations WHERE businessID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Location, (businessID,))
+    mysql.connection.commit()
+    return redirect('/add_location')
 
 # Routes for Loans page
 @app.route('/add_loan', methods=["POST", "GET"])
@@ -274,12 +291,13 @@ def add_loan():
     return render_template("add_loan.j2", loans=loans,  clients=clients)
 
 @app.route('/delete_loan/<int:loanID>')
-def delete_assignment(loanID):
+def delete_loan(loanID):
     # Query to delete loan entry with selected ID
     query_Delete_Loan = "DELETE FROM Loans WHERE loanID = '%s';"
     cur = mysql.connection.cursor()
     cur.execute(query_Delete_Loan, (loanID,))
     mysql.connection.commit()
+    return redirect('/add_loan')
 
 # Routes for Collections page
 @app.route('/add_collection', methods=["POST", "GET"])
@@ -294,7 +312,7 @@ def add_collection():
     query_Loans = 'SELECT * FROM Loans;'
     cur.execute(query_Loans)
     loans = cur.fetchall()
-    query_Collections = 'SELECT * FROM Collections;'
+    query_Collections = 'SELECT * FROM Collections INNER JOIN BusinessLocations ON Collections.businessID=BusinessLocations.businessID INNER JOIN Enforcers ON Enforcers.enforcerID=Collections.enforcerID;'
     cur.execute(query_Collections)
     collections = cur.fetchall()
 
@@ -341,7 +359,6 @@ def delete_rank(rankID):
     mysql.connection.commit()
 
     return redirect('../add_rank')
-
 
 # Listener
 

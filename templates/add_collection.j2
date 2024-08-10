@@ -8,18 +8,18 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th>Enforcer ID</th>
+                <th>Enforcer Name</th>
                 <th>Loan ID</th>
-                <th>Business ID</th>
+                <th>Business Address</th>
                 <th>Amount</th>
                 <th>Date</th>
             </tr>
             <tbody>
             {% for collection in collections %}
                 <tr>
-                    <td>{{ collection['enforcerID'] }}</td>
+                    <td>{{ collection['firstName'] }} {% if collection['lastName'] != None %} {{ collection['lastName'] }} {% endif %}</td>
                     <td>{{ collection['loanID'] }}</td>
-                    <td>{{ collection['businessID'] }}</td>
+                    <td>{{ collection['streetAddress'] }}, {{ collection['cityName'] }}, {{ collection['stateName'] }}</td>
                     <td>{{ collection['amountCollected'] }}</td>
                     <td>{{ collection['dateOfCollection'] }}</td>
                 </tr>
