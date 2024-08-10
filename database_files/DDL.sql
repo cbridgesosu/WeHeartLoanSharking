@@ -55,7 +55,7 @@ CREATE OR REPLACE TABLE Enforcers (
   startDate date NOT NULL,
   rankID int(11) DEFAULT NULL,
   PRIMARY KEY (enforcerID),
-  FOREIGN KEY (rankID) REFERENCES Ranks(rankID) ON DELETE NULL
+  FOREIGN KEY (rankID) REFERENCES Ranks(rankID) ON DELETE SET NULL
 );
 
 -- --------------------------------------------------------
