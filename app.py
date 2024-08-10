@@ -273,6 +273,14 @@ def add_loan():
 
     return render_template("add_loan.j2", loans=loans,  clients=clients)
 
+@app.route('/delete_loan/<int:loanID>')
+def delete_assignment(loanID):
+    # Query to delete loan entry with selected ID
+    query_Delete_Loan = "DELETE FROM Loans WHERE loanID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Loan, (loanID,))
+    mysql.connection.commit()
+
 # Routes for Collections page
 @app.route('/add_collection', methods=["POST", "GET"])
 def add_collection():
