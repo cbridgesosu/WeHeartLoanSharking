@@ -220,7 +220,7 @@ def add_location():
     cur.execute(query_Clients)
     clients = cur.fetchall()
 
-    query_Business_Locations = 'SELECT streetAddress, cityName, stateName, zipCode, Clients.firstName, Clients.lastName FROM BusinessLocations JOIN Clients ON BusinessLocations.ownerID = Clients.clientID;'
+    query_Business_Locations = 'SELECT businessID, streetAddress, cityName, stateName, zipCode, Clients.firstName, Clients.lastName FROM BusinessLocations JOIN Clients ON BusinessLocations.ownerID = Clients.clientID;'
     cur.execute(query_Business_Locations)
     locations = cur.fetchall()
 
@@ -242,6 +242,15 @@ def add_location():
             return redirect('/add_location')
     
     return render_template("add_location.j2", locations=locations, clients=clients)
+
+@app.route('/delete_location/<int:businessID>')
+def delete_location(businessID):
+    # Query to delete enforcer entry with selected ID
+    query_Delete_Location = "DELETE FROM BusinessLocations WHERE businessID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Location, (businessID,))
+    mysql.connection.commit()
+    return redirect('/add_location')
 
 # Routes for Loans page
 @app.route('/add_loan', methods=["POST", "GET"])
