@@ -65,6 +65,14 @@ def add_enforcer():
 
     return render_template("add_enforcer.j2", enforcers=enforcers, ranks=ranks)
 
+@app.route('/delete_enforcer/<int:enforcerID>')
+def delete_enforcer(enforcerID):
+    # Query to delete enforcer entry with selected ID
+    query_Delete_Enforcer = "DELETE FROM Enforcers WHERE enforcerID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Enforcer, (enforcerID,))
+    mysql.connection.commit()
+    return redirect('/add_enforcer')
 
 # Routes for Clients page
 @app.route('/add_client', methods=["POST", "GET"])
