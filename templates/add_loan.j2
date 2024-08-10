@@ -8,7 +8,6 @@
         <table class="table table-striped table-bordered">
             <thead class="table-success">
             <tr>
-                <th>Loan ID</th>
                 <th>Client</th>
                 <th>Origination Amount</th>
                 <th>Principal Remaining</th>
@@ -19,7 +18,6 @@
             <tbody>
             {% for loan in loans %}
                 <tr>
-                    <td>{{ loan['loanID'] }}</td>
                     <td>{{ loan["firstName"] }} {% if loan["lastName"] != None %} {{ loan["lastName"] }} {% endif %}</td>
                     <td>{{ loan['originationAmount'] }}</td>
                     <td>{% if loan['principalRemaining'] != None %} {{ loan['principalRemaining'] }} {% else %} {{ loan['originationAmount'] }} {% endif %}</td>

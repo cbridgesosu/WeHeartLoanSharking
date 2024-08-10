@@ -8,7 +8,6 @@
         <table class="table table-striped table-bordered">
             <thead class="table-success">
                 <tr>
-                    <th>Rank ID</th>
                     <th>Rank Name</th>
                     <th>Delete</th>
                 </tr>
@@ -16,7 +15,6 @@
             <tbody>
                 {% for rank in ranks %}
                     <tr>
-                        <td>{{ rank['rankID'] }}</td>
                         <td>{{ rank['rankName'] }}</td>
                         <td class="col-1"><a class="icon-link icon-link-hover text-end" style="--bs-link-color-rgb: 25, 180, 184;" href="/delete_rank/{{ rank['rankID'] }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">

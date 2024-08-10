@@ -8,7 +8,6 @@
         <table class="table table-striped table-bordered">
             <thead class="table-success">
                 <tr>
-                    <th>Client ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>In Good Standing</th>
@@ -19,7 +18,6 @@
             <tbody>
             {% for client in clients %}
                 <tr>
-                    <td>{{ client['clientID'] }}</td>
                     <td>{{ client['firstName'] }}</td>
                     <td>{{ client['lastName'] }}</td>
                     {% if client['inGoodStanding'] == 1 %}

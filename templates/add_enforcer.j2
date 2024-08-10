@@ -8,7 +8,6 @@
         <table class="table table-striped table-bordered">
             <thead class="table-success">
             <tr>
-                <th>Enforcer ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Start Date</th>
@@ -17,7 +16,6 @@
             <tbody>
             {% for enforcer in enforcers %}
                 <tr>
-                    <td>{{ enforcer['enforcerID'] }}</td>
                     <td>{{ enforcer['firstName'] }}</td>
                     <td>{{ enforcer['lastName'] }}</td>
                     <td>{{ enforcer['startDate'] }}</td>
