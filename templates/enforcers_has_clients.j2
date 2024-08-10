@@ -18,7 +18,7 @@
             {% for assignment in enforcer_has_clients %}
                 <tr>
                     <td>{{ assignment['firstName'] }} {% if assignment['lastName'] != None %} {{ assignment['lastName'] }} {% endif %}</td>
-                    <td>{{ assignment['Clients.firstName'] }} {% if assignment['Clients.firstName'] != None %} {{ assignment['Clients.lastName'] }} {% endif %}</td>
+                    <td>{{ assignment['Clients.firstName'] }} {% if assignment['Clients.lastName'] != None %} {{ assignment['Clients.lastName'] }} {% endif %}</td>
                     <td class="col-1"><a class="icon-link icon-link-hover text-end" style="--bs-link-color-rgb: 25, 180, 184;" href="/delete_assignment/{{ assignment['enforcerHasClientID'] }}" >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 
