@@ -286,7 +286,7 @@ def add_collection():
     query_Loans = 'SELECT * FROM Loans;'
     cur.execute(query_Loans)
     loans = cur.fetchall()
-    query_Collections = 'SELECT * FROM Collections;'
+    query_Collections = 'SELECT * FROM Collections INNER JOIN BusinessLocations ON Collections.businessID=BusinessLocations.businessID INNER JOIN Enforcers ON Enforcers.enforcerID=Collections.enforcerID;'
     cur.execute(query_Collections)
     collections = cur.fetchall()
 
