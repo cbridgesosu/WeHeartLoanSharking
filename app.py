@@ -84,8 +84,6 @@ def update_enforcer(enforcerID):
         query_Ranks = 'SELECT * FROM Ranks;'
         cur.execute(query_Ranks)
         ranks = cur.fetchall()
-        print(enforcer)
-        print(ranks)
         # Render the page if the request is a GET
         return render_template("update_enforcer.j2", enforcer=enforcer, ranks=ranks)
     elif request.method == "POST":

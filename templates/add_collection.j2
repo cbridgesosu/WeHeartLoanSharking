@@ -43,7 +43,7 @@
                     <label for="select_enforcer">Select Enforcer:</label>
                     <select class="form-select bg-secondary-subtle" id="select_enforcer" name="select_enforcer">
                         {% for enforcer in enforcers %}
-                            <option value={{ enforcer["enforcerID"] }} label={{ enforcer["firstName"] }}>{{ enforcer["firstName"] }}</option>
+                            <option value={{ enforcer["enforcerID"] }}>{{ enforcer["firstName"] }} {% if enforcer["lastName"] != None %} {{ enforcer["lastName"] }} {% endif %}</option>
                         {% endfor %}
                     </select>
                 </div>
