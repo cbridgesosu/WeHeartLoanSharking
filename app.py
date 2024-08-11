@@ -334,10 +334,10 @@ def add_collection():
 
 @app.route('/delete_collection/<int:collectionID>')
 def delete_collection(collectionID):
-    # Query to delete loan entry with selected ID
-    query_Delete_Loan = "DELETE FROM Collections WHERE collectionID = '%s';"
+    # Query to delete collection entry with selected ID
+    query_Delete_Collection = "DELETE FROM Collections WHERE collectionID = '%s';"
     cur = mysql.connection.cursor()
-    cur.execute(query_Delete_Loan, (collectionID,))
+    cur.execute(query_Delete_Collection, (collectionID,))
     mysql.connection.commit()
     return redirect('/add_collection')
 
