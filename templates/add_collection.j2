@@ -53,13 +53,13 @@
                     <label for="select_loan">Select Loan:</label>
                     <select class="form-select bg-secondary-subtle" id="select_loan" name="select_loan">
                         {% for loan in loans %}
-                            <option value={{ loan["loanID"] }} label={{ loan["loanID"] }}>{{ loan["loanID"] }}</option>
+                            <option value={{ loan["loanID"] }}>{{ loan["loanID"] }} ({{ loan['firstName'] }} {{ loan['lastName'] }})</option>
                         {% endfor %}
                     </select>
                     <label for="select_location">Collection Location:</label>
                     <select class="form-select bg-secondary-subtle" id="select_location" name="select_location">
                         {% for location in locations %}
-                            <option value={{ location["businessID"] }} label={{ location["businessID"] }}>{{ location["businessID"] }}</option>
+                            <option value={{ location["businessID"] }} >{{ location["businessID"] }} ({{ location["streetAddress"] }}, {{ location['cityName'] }}, {{ location['stateName'] }})</option>
                         {% endfor %}
                     </select>
                 </div>

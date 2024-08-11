@@ -309,7 +309,7 @@ def add_collection():
     query_Enforcers = 'SELECT * FROM Enforcers;'
     cur.execute(query_Enforcers)
     enforcers = cur.fetchall()
-    query_Loans = 'SELECT * FROM Loans;'
+    query_Loans = 'SELECT * FROM Loans INNER JOIN Clients ON Clients.clientID=Loans.clientID;'
     cur.execute(query_Loans)
     loans = cur.fetchall()
     query_Collections = 'SELECT * FROM Collections INNER JOIN BusinessLocations ON Collections.businessID=BusinessLocations.businessID INNER JOIN Enforcers ON Enforcers.enforcerID=Collections.enforcerID;'
