@@ -332,6 +332,15 @@ def add_collection():
 
     return render_template("add_collection.j2", collections=collections, loans=loans, enforcers=enforcers, locations=locations)
 
+@app.route('/delete_collection/<int:collectionID>')
+def delete_collection(collectionID):
+    # Query to delete loan entry with selected ID
+    query_Delete_Loan = "DELETE FROM Collections WHERE collectionID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query_Delete_Loan, (collectionID,))
+    mysql.connection.commit()
+    return redirect('/add_collection')
+
 # Routes for Ranks page
 @app.route('/add_rank', methods=["POST", "GET"])
 def add_rank():
