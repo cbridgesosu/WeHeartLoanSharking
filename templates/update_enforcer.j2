@@ -1,0 +1,33 @@
+
+{% extends "base.j2" %}
+{% block content %}
+
+    <div class="container mt-3 pb-3 rounded-top text-warning">
+    </div>
+
+    <div class="container rounded-bottom pb-3 text-warning">
+        <h1>Update Enforcer</h1>
+        <form action="/update_enforcer/{{enforcer[0]["enforcerID"]}}" method="POST">
+            <div class="row">
+                <div class="col-5">
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="text" name="firstName" placeholder="First Name" required=True value={{enforcer[0]["firstName"]}}>
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="text" name="lastName" placeholder="Last Name" value="{% if enforcer[0]["lastName"] != None %}{{enforcer[0]["lastName"]}}{% endif %}">
+                    <input class="form-control mx-3 mb-3 bg-secondary-subtle" type="date" name="startDate" required=True value={{enforcer[0]["startDate"]}}>
+                    <select class="form-select mx-3 mb-3 bg-secondary-subtle " id="rankID" name="rankID">
+                        {% for rank in ranks %}
+                            <option value=
+                                {{ rank["rankID"] }} 
+                                {% if enforcer[0]["rankName"] == rank["rankName"] %} selected {% endif %}>
+                                {{ rank["rankName"] }}
+                            </option>
+                        {% endfor %}
+                        <option value=None {% if enforcer[0]["rankName"] == None %} selected {% endif %}>None</option>
+                    </select> 
+                    <button class="btn btn-warning col-5 mx-3" type="submit">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

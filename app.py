@@ -74,6 +74,32 @@ def delete_enforcer(enforcerID):
     mysql.connection.commit()
     return redirect('/add_enforcer')
 
+@app.route('/update_enforcer/<int:enforcerID>', methods=["POST", "GET"])
+def update_enforcer(enforcerID):
+    cur = mysql.connection.cursor()
+    if request.method == "GET":
+        query_Enforcer_selected = 'SELECT enforcerID, firstName, lastName, startDate, Ranks.rankID, rankName FROM Enforcers LEFT JOIN Ranks ON Ranks.rankID=Enforcers.rankID WHERE enforcerID = %s;' % (enforcerID)
+        cur.execute(query_Enforcer_selected)
+        enforcer = cur.fetchall()
+        query_Ranks = 'SELECT * FROM Ranks;'
+        cur.execute(query_Ranks)
+        ranks = cur.fetchall()
+        print(enforcer)
+        print(ranks)
+        # Render the page if the request is a GET
+        return render_template("update_enforcer.j2", enforcer=enforcer, ranks=ranks)
+    elif request.method == "POST":
+        firstName = request.form.get('firstName')
+        lastName = request.form.get('lastName')
+        inGoodStanding = request.form.get('inGoodStanding')
+        query_Update_Enforcer = "UPDATE Enforcers SET Enforcers.firstName = %s, Enforcers.lastName = %s, Enforcers.inGoodStanding = %s WHERE Enforcers.enforcerID = %s;"
+        try:
+            cur.execute(query_Update_Enforcer, (firstName, lastName, inGoodStanding, enforcerID))
+            mysql.connection.commit()
+        except:
+            print("Error: ")
+        return redirect('../add_enforcer')
+
 # Routes for Clients page
 @app.route('/add_client', methods=["POST", "GET"])
 def add_client():
