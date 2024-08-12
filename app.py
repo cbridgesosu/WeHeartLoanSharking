@@ -46,13 +46,10 @@ def add_enforcer():
         lastName = request.form.get('lastName')
         startDate = request.form.get('startDate')
         rankID = request.form.get('rankID')
-        print(rankID)
         if rankID == "None":
              rankID = None
-        print(rankID)
-        print(type(rankID))
+
         # Insert query for add new enforcer
-        
         query_Add_Enforcer = f"INSERT INTO Enforcers (firstName, lastName, startDate, rankID) VALUES (%s, %s, %s, %s);"
         try:
             print(cur.execute(query_Add_Enforcer, (firstName, lastName, startDate, rankID,)))
@@ -78,18 +75,22 @@ def delete_enforcer(enforcerID):
 def update_enforcer(enforcerID):
     cur = mysql.connection.cursor()
     if request.method == "GET":
+        # Query to populate form with current enforcer attributes
         query_Enforcer_selected = 'SELECT enforcerID, firstName, lastName, startDate, Ranks.rankID, rankName FROM Enforcers LEFT JOIN Ranks ON Ranks.rankID=Enforcers.rankID WHERE enforcerID = %s;' % (enforcerID)
         cur.execute(query_Enforcer_selected)
         enforcer = cur.fetchall()
+        # Query to populate ranks select dropdown
         query_Ranks = 'SELECT * FROM Ranks;'
         cur.execute(query_Ranks)
         ranks = cur.fetchall()
         # Render the page if the request is a GET
         return render_template("update_enforcer.j2", enforcer=enforcer, ranks=ranks)
+    # Handles update enforcer form request
     elif request.method == "POST":
         firstName = request.form.get('firstName')
         lastName = request.form.get('lastName')
         inGoodStanding = request.form.get('inGoodStanding')
+        # Query to update efnrocer attributes
         query_Update_Enforcer = "UPDATE Enforcers SET Enforcers.firstName = %s, Enforcers.lastName = %s, Enforcers.inGoodStanding = %s WHERE Enforcers.enforcerID = %s;"
         try:
             cur.execute(query_Update_Enforcer, (firstName, lastName, inGoodStanding, enforcerID))
@@ -240,14 +241,16 @@ def edit_assignment(id):
 @app.route('/add_location', methods=["POST", "GET"])
 def add_location():
     cur = mysql.connection.cursor()
+    # Query to populate the clients select dropdown
     query_Clients = 'SELECT clientID, firstName, lastName FROM Clients;'
     cur.execute(query_Clients)
     clients = cur.fetchall()
-
+    # Query to populate the locations display table
     query_Business_Locations = 'SELECT businessID, streetAddress, cityName, stateName, zipCode, Clients.firstName, Clients.lastName FROM BusinessLocations JOIN Clients ON BusinessLocations.ownerID = Clients.clientID;'
     cur.execute(query_Business_Locations)
     locations = cur.fetchall()
 
+    # Handles the new location form request
     if request.method == "POST":
             clientID = request.form.get('assign_owner')
             streetAddress = request.form.get('streetAddress')
@@ -327,24 +330,30 @@ def delete_loan(loanID):
 @app.route('/add_collection', methods=["POST", "GET"])
 def add_collection():
     cur = mysql.connection.cursor()
+    # Query to populate locuations select dropdown
     query_Business_Locations = 'SELECT * FROM BusinessLocations;'
     cur.execute(query_Business_Locations)
     locations = cur.fetchall()
+    # Query to populate enforcers select dropdown
     query_Enforcers = 'SELECT * FROM Enforcers;'
     cur.execute(query_Enforcers)
     enforcers = cur.fetchall()
+    # Query to populate loans select dropdown
     query_Loans = 'SELECT * FROM Loans INNER JOIN Clients ON Clients.clientID=Loans.clientID;'
     cur.execute(query_Loans)
     loans = cur.fetchall()
+    # Query to populate collections display table
     query_Collections = 'SELECT * FROM Collections INNER JOIN BusinessLocations ON Collections.businessID=BusinessLocations.businessID INNER JOIN Enforcers ON Enforcers.enforcerID=Collections.enforcerID;'
     cur.execute(query_Collections)
     collections = cur.fetchall()
 
+    # Handles collections form add request
     if request.method == "POST":
             enforcerID = request.form.get('select_enforcer')
             loanID = request.form.get('select_loan')
             businessID = request.form.get('select_location')
             amountCollected = request.form.get('amount_collected')
+            # Insert query for add new collection
             query_Add_Collection = "INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection) VALUES (%s, %s, %s, %s, '2024-01-01');"
             try:
                 cur.execute(query_Add_Collection, (enforcerID, loanID, businessID, amountCollected))
@@ -369,11 +378,15 @@ def delete_collection(collectionID):
 @app.route('/add_rank', methods=["POST", "GET"])
 def add_rank():
     cur = mysql.connection.cursor()
+    # Query to populate ranks display table
     query_Ranks = 'SELECT * FROM Ranks ORDER BY rankID;'
     cur.execute(query_Ranks)
     ranks = cur.fetchall()
+
+    # Handles ranks form add request
     if request.method == "POST":
             rankName = request.form.get('rankName')
+            # Insert query to add new rank
             query_Add_Rank = "INSERT INTO Ranks (rankName) VALUES (%s);"
             try:
                  cur.execute(query_Add_Rank, (rankName,))
@@ -394,10 +407,7 @@ def delete_rank(rankID):
     return redirect('../add_rank')
 
 # Listener
-
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', PORT))
-    #                                 ^^^^
-    #              You can replace this number with any valid port
     
     app.run(port=port) 
