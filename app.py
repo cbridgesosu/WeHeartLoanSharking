@@ -1,5 +1,5 @@
-# The code for database configuration and general route structure is based on the CS340 Flask starter code and module walkthroughs.
-# All route logic and SQL queries are entirely our own work with the follwoing exception:
+# The code for database configuration and general route structure is adapted from the CS340 Flask starter code and module walkthroughs.
+# All route logic and SQL queries are entirely our own work with the following exception:
     # Database error handling:
         # Date: 08/05/24
         # Adapted from the docmentation at:
@@ -59,7 +59,7 @@ def add_enforcer():
         # Insert query for add new enforcer
         query_Add_Enforcer = f"INSERT INTO Enforcers (firstName, lastName, startDate, rankID) VALUES (%s, %s, %s, %s);"
         try:
-            print(cur.execute(query_Add_Enforcer, (firstName, lastName, startDate, rankID,)))
+            cur.execute(query_Add_Enforcer, (firstName, lastName, startDate, rankID,))
             mysql.connection.commit()
             print("Enforcer added.")
         except mysql.connection.IntegrityError as err:
