@@ -1,5 +1,6 @@
 # The code for database configuration and general route structure is adapted from the CS340 Flask starter code and module walkthroughs.
 # All route logic and SQL queries are entirely our own work with the following exception:
+    # Parameterized SQL query structure based on Flask module guide videos
     # Database error handling:
         # Date: 08/05/24
         # Adapted from the docmentation at:
@@ -14,7 +15,7 @@ load_dotenv()
 
 PORT = os.getenv('PORT')
 
-# Configuration
+# Configuration - this module copied from the starter code
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'classmysql.engr.oregonstate.edu'
@@ -413,7 +414,7 @@ def delete_rank(rankID):
 
     return redirect('../add_rank')
 
-# Listener
+# Listener - this module copied from the starter code
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', PORT))
     
