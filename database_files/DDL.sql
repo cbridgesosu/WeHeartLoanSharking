@@ -132,16 +132,22 @@ CREATE OR REPLACE TABLE `Ranks` (
    FROM Clients 
    INNER JOIN BusinessLocations ON Clients.clientID = BusinessLocations.ownerID;
 */
+
+/* No FKs to subquery */
 INSERT INTO Clients (firstName, lastName, inGoodStanding)
 VALUES ('Jon', 'Snow', 1),
 ('Cersei', 'Lannister', 0),
 ('Ned', 'Stark', 0);
 
+/* No FKs to subquery */
+INSERT INTO Ranks (rankID, rankName)
+VALUES (1, 'Underboss'), (2, 'Captain'), (3, 'Soldier');
+
 INSERT INTO BusinessLocations (ownerID, streetAddress, cityName, stateName, zipCode)
-VALUES (1, '1234 Main St', 'Chicago', 'Illinois', '60603'),
-(1, '5678 Westeros Pl', 'Paris', 'Texas', '75462'),
-(2, '23rd W. Broadway', 'New York', 'New York', '10016'),
-(3, '327 Beagle St', 'San Diego', 'California', '92038');
+VALUES ((SELECT clientID FROM Clients WHERE firstName = 'Jon' AND lastName = 'Snow'), '1234 Main St', 'Chicago', 'Illinois', '60603'),
+((SELECT clientID FROM Clients WHERE firstName = 'Jon' AND lastName = 'Snow'), '5678 Westeros Pl', 'Paris', 'Texas', '75462'),
+((SELECT clientID FROM Clients WHERE firstName = 'Cersei' AND lastName = 'Lannister'), '23rd W. Broadway', 'New York', 'New York', '10016'),
+((SELECT clientID FROM Clients WHERE firstName = 'Ned' AND lastName = 'Stark'), '327 Beagle St', 'San Diego', 'California', '92038');
 
 /*
 SELECT Clients.firstName, Loans.originationAmount 
@@ -150,26 +156,26 @@ SELECT Clients.firstName, Loans.originationAmount
 */
 
 INSERT INTO Loans (clientID, originationAmount, principalRemaining, originationDate, interestRate, paymentDue)
-VALUES (1, 50000, 50000, '2024-07-04', 33, 15),
-(1, 50000, 50000, '2024-07-05', 33, 15),
-(2, 200000, 150000, '2022-01-01', 45, 1),
-(3, 100000, 55000, '2023-12-25', 23, 10);
+VALUES ((SELECT clientID FROM Clients WHERE firstName = 'Jon' AND lastName = 'Snow'), 50000, 50000, '2024-07-04', 33, 15),
+((SELECT clientID FROM Clients WHERE firstName = 'Jon' AND lastName = 'Snow'), 50000, 50000, '2024-07-05', 33, 15),
+((SELECT clientID FROM Clients WHERE firstName = 'Cersei' AND lastName = 'Lannister'), 200000, 150000, '2022-01-01', 45, 1),
+((SELECT clientID FROM Clients WHERE firstName = 'Ned' AND lastName = 'Stark'), 100000, 55000, '2023-12-25', 23, 10);
 
 INSERT INTO Enforcers (firstName, lastName, startDate, rankID)
-VALUES ('Sergei', NULL, '1990-01-01', 1),
-('Elena', 'Stark', '2015-08-22', 2),
+VALUES ('Sergei', NULL, '1990-01-01', (SELECT rankID FROM Ranks WHERE rankName = 'Underboss')),
+('Elena', 'Stark', '2015-08-22', (SELECT rankID FROM Ranks WHERE rankName = 'Captain')),
 ('Georg', 'Rulin', '2007-02-27', NULL);
 
 INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection)
-VALUES (1, 1, 2, 1000, '2024-07-01'),
-(2, 2, 1, 5000, '2024-07-10'),
-(3, 3, 3, 1500, '2024-07-07');
+VALUES ((SELECT enforcerID FROM Enforcers WHERE firstName = 'Sergei'), (SELECT loanID from Loans WHERE originationDate = '2024-07-04'), (SELECT businessID from BusinessLocations WHERE streetAddress = '5678 Westeros Pl'), 1000, '2024-07-01'),
+((SELECT enforcerID FROM Enforcers WHERE firstName = 'Elena'), (SELECT loanID from Loans WHERE originationDate = '2024-07-05'), (SELECT businessID from BusinessLocations WHERE streetAddress = '1234 Main St'), 5000, '2024-07-10'),
+((SELECT enforcerID FROM Enforcers WHERE firstName = 'Georg'), (SELECT loanID from Loans WHERE originationDate = '2022-01-01'), (SELECT businessID from BusinessLocations WHERE streetAddress = '23rd W. Broadway'), 1500, '2024-07-07');
 
 INSERT INTO EnforcersHasClients (enforcerID, clientID)
-VALUES (1, 3), (2, 1), (3, 3), (2, 3);
-
-INSERT INTO Ranks (rankID, rankName)
-VALUES (1, 'Underboss'), (2, 'Captain'), (3, 'Soldier');
+VALUES ((SELECT enforcerID FROM Enforcers WHERE firstName = 'Sergei'), (SELECT clientID FROM Clients WHERE firstName = 'Ned' AND lastName = 'Stark')), 
+((SELECT enforcerID FROM Enforcers WHERE firstName = 'Elena'), (SELECT clientID FROM Clients WHERE firstName = 'Jon' AND lastName = 'Snow')), 
+((SELECT enforcerID FROM Enforcers WHERE firstName = 'Georg'), (SELECT clientID FROM Clients WHERE firstName = 'Ned' AND lastName = 'Stark')), 
+((SELECT enforcerID FROM Enforcers WHERE firstName = 'Elena'), (SELECT clientID FROM Clients WHERE firstName = 'Ned' AND lastName = 'Stark'));
 
 -- Suggested edits from Step 2 draft page
 -- URL: https://canvas.oregonstate.edu/courses/1967354/assignments/9690210?module_item_id=24460832
