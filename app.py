@@ -38,7 +38,7 @@ def root():
 def add_enforcer():
     # Query to populate the display table
     query_Enforcers = 'SELECT enforcerID, firstName, lastName, startDate, rankName FROM Enforcers LEFT JOIN Ranks ON Enforcers.rankID=Ranks.rankID ORDER BY enforcerID;'
-    # Query to polulate the select client dropdown  
+    # Query to polulate the select Ranks dropdown  
     query_Ranks = 'SELECT rankID, rankName FROM Ranks;'
 
     # Execute all queries and store json
@@ -266,7 +266,7 @@ def add_location():
             cityName = request.form.get('cityName')
             zipCode = request.form.get('zipCode')
 
-            # Insert query for add new enforcers_has_client 
+            # Insert query for add new location 
             query_Add_Location = "INSERT INTO BusinessLocations (ownerID, streetAddress, cityName, stateName, zipCode) VALUES (%s, %s, %s, %s, %s);"
             try:
                 cur.execute(query_Add_Location, (clientID, streetAddress, stateName, cityName, zipCode))
@@ -280,7 +280,7 @@ def add_location():
 
 @app.route('/delete_location/<int:businessID>')
 def delete_location(businessID):
-    # Query to delete enforcer entry with selected ID
+    # Query to delete location entry with selected ID
     query_Delete_Location = "DELETE FROM BusinessLocations WHERE businessID = '%s';"
     cur = mysql.connection.cursor()
     cur.execute(query_Delete_Location, (businessID,))
@@ -338,7 +338,7 @@ def delete_loan(loanID):
 @app.route('/add_collection', methods=["POST", "GET"])
 def add_collection():
     cur = mysql.connection.cursor()
-    # Query to populate locuations select dropdown
+    # Query to populate locations select dropdown
     query_Business_Locations = 'SELECT * FROM BusinessLocations;'
     cur.execute(query_Business_Locations)
     locations = cur.fetchall()
@@ -362,7 +362,7 @@ def add_collection():
             businessID = request.form.get('select_location')
             amountCollected = request.form.get('amount_collected')
             # Insert query for add new collection
-            query_Add_Collection = "INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection) VALUES (%s, %s, %s, %s, '2024-01-01');"
+            query_Add_Collection = "INSERT INTO Collections (enforcerID, loanID, businessID, amountCollected, dateOfCollection) VALUES (%s, %s, %s, %s, NOW());"
             try:
                 cur.execute(query_Add_Collection, (enforcerID, loanID, businessID, amountCollected))
                 mysql.connection.commit()
