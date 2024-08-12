@@ -1,3 +1,10 @@
+# The code for database configuration and general route structure is based on the CS340 Flask starter code and module walkthroughs.
+# All route logic and SQL queries are entirely our own work with the follwoing exception:
+    # Database error handling:
+        # Date: 08/05/24
+        # Adapted from the docmentation at:
+        # https://dev.mysql.com/doc/connector-python/en/connector-python-api-errors-integrityerror.html
+
 from flask import Flask, render_template, request, redirect, json
 import os
 from dotenv import load_dotenv
