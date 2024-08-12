@@ -8,3 +8,7 @@
 # Logo image generated from Canva image generator tool on August 1st 2024 using the prompt:
 #       "Cartoon shark with an orange background"
 #       URL: https://www.canva.com/ai-image-generator/
+# Database error handling:
+#       Date: 08/05/24
+#       Adapted from the docmentation at:
+#       https://dev.mysql.com/doc/connector-python/en/connector-python-api-errors-integrityerror.html
