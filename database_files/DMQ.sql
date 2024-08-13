@@ -73,7 +73,7 @@ SELECT enforcerID, firstName, lastName, startDate, Ranks.rankID, rankName FROM E
 SELECT * FROM Ranks;
 
 -- Query to update eforcer attributes
-UPDATE Enforcers SET Enforcers.firstName = firstName, Enforcers.lastName = lastName, Enforcers.inGoodStanding = inGoodStanding WHERE Enforcers.enforcerID = enforcerID;
+UPDATE Enforcers SET Enforcers.firstName = firstName, Enforcers.lastName = lastName, Enforcers.startDate = startDate, Enforcers.rankID = rankID WHERE Enforcers.enforcerID = enforcerID;
 
 -- Query to insert a record into the Clients table
 INSERT INTO Clients (firstName, lastName, inGoodStanding) VALUES (firstName, lastName, inGoodStanding);
