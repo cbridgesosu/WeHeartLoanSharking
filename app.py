@@ -99,6 +99,8 @@ def update_enforcer(enforcerID):
         lastName = request.form.get('lastName')
         startDate = request.form.get('startDate')
         rankID = request.form.get('rankID')
+        if rankID == "None":
+             rankID = None
         # Query to update efnrocer attributes
         query_Update_Enforcer = "UPDATE Enforcers SET Enforcers.firstName = %s, Enforcers.lastName = %s, Enforcers.startDate = %s, Enforcers.rankID = %s WHERE Enforcers.enforcerID = %s;"
         try:
