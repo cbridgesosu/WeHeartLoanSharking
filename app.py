@@ -97,14 +97,16 @@ def update_enforcer(enforcerID):
     elif request.method == "POST":
         firstName = request.form.get('firstName')
         lastName = request.form.get('lastName')
-        inGoodStanding = request.form.get('inGoodStanding')
+        startDate = request.form.get('startDate')
+        rankID = request.form.get('rankID')
         # Query to update efnrocer attributes
-        query_Update_Enforcer = "UPDATE Enforcers SET Enforcers.firstName = %s, Enforcers.lastName = %s, Enforcers.inGoodStanding = %s WHERE Enforcers.enforcerID = %s;"
+        query_Update_Enforcer = "UPDATE Enforcers SET Enforcers.firstName = %s, Enforcers.lastName = %s, Enforcers.startDate = %s, Enforcers.rankID = %s WHERE Enforcers.enforcerID = %s;"
         try:
-            cur.execute(query_Update_Enforcer, (firstName, lastName, inGoodStanding, enforcerID))
+            print(firstName, lastName, startDate, rankID, enforcerID)
+            cur.execute(query_Update_Enforcer, (firstName, lastName, startDate, rankID, enforcerID))
             mysql.connection.commit()
-        except:
-            print("Error: ")
+        except mysql.connection.IntegrityError as err:
+                print("Error: {}".format(err))
         return redirect('../add_enforcer')
 
 # Routes for Clients page
